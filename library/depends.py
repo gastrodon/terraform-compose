@@ -1,9 +1,9 @@
-from typing import Dict, List, Optional, Set
+from typing import Any, Dict, List, Optional, Set
 
 from library.types.exceptions import CircularDependsOn
 
 
-def verify(services: Dict[str, any]) -> Optional[List[str]]:
+def verify(services: Dict[str, Any]) -> Optional[List[str]]:
     """
     Look through the dependencies of some config,
     and report any that don't exist or are circular
@@ -13,9 +13,9 @@ def verify(services: Dict[str, any]) -> Optional[List[str]]:
 
 def tree(
     service: str,
-    services: Dict[str, any],
+    services: Dict[str, Any],
     parents: Optional[Set[str]] = [],
-) -> Dict[str, any]:
+) -> Dict[str, Any]:
     """
     Build a dependency tree for some service
 
@@ -42,5 +42,5 @@ def tree(
     }
 
 
-def order(services: Dict[str, any]) -> List[str]:
+def order(services: Dict[str, Any]) -> List[str]:
     ...
