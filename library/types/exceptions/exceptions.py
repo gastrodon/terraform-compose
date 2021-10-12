@@ -16,7 +16,7 @@ class Codes(IntEnum):
 
 class RenderException(Exception):
     def exit(self):  # TODO allow for not exiting when testing
-        typer.secho(self.render, color=colors.RED, err=True)
+        typer.secho(self.render, fg=colors.RED, err=True)
         sys.exit(self.code)
 
     @property
