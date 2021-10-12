@@ -17,3 +17,9 @@ def depends(
             lib_depends.tree(service, config["services"]),
         )
     )
+
+    typer.echo(
+        lib_depends.order(
+            lib_depends.tree(service, config["services"]),
+        )
+    )
