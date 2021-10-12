@@ -28,7 +28,7 @@ class CircularDependsOn(RenderException):
     def __init__(self, service: str, parents: list[str]):
         self.message = ERR_CIRCULAR_DEPENDS_ON.format(
             service=service,
-            path=" <- ".join((service, *parents)),
+            path=" -> ".join((*parents, service)),
         )
 
         super().__init__(self.message)
