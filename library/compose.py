@@ -23,7 +23,7 @@ def dependency_tree(
     }
     """
     if service in (parents or []):
-        raise CircularDependsOn(service, parents or [])
+        CircularDependsOn(service, parents or []).exit()
 
     depends_on = services[service].get("depends_on", [])
 
