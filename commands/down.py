@@ -4,5 +4,5 @@ import app
 
 
 @app.app.command()
-async def down():
+def down():
     typer.echo("down")
