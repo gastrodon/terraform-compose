@@ -3,7 +3,7 @@ from typing import Dict, List, Optional, Set
 from library.types.exceptions import CircularDependsOn
 
 
-def dependency_verify(services: Dict[str, any]) -> Optional[List[str]]:
+def verify(services: Dict[str, any]) -> Optional[List[str]]:
     """
     Look through the dependencies of some config,
     and report any that don't exist or are circular
@@ -11,7 +11,7 @@ def dependency_verify(services: Dict[str, any]) -> Optional[List[str]]:
     ...
 
 
-def dependency_tree(
+def tree(
     service: str, services: Dict[str, any], parents: Optional[Set[str]] = []
 ) -> Dict[str, any]:
     """
@@ -30,7 +30,7 @@ def dependency_tree(
     return {
         "name": service,
         "depends_on": [
-            dependency_tree(
+            tree(
                 it,
                 services,
                 [*parents, service],
@@ -40,5 +40,5 @@ def dependency_tree(
     }
 
 
-def dependency_order(services: Dict[str, any]) -> List[str]:
+def order(services: Dict[str, any]) -> List[str]:
     ...
