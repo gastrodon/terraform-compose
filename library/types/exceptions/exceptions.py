@@ -5,8 +5,7 @@ from enum import IntEnum
 
 ERR_CIRCULAR_DEPENDS_ON = """\
 {service} has a circular dependency!
-    {path}
-"""
+    {path}"""
 
 
 class Codes(IntEnum):
