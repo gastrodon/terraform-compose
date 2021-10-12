@@ -18,8 +18,12 @@ def depends(
         )
     )
 
+    typer.echo("\n")
+
     typer.echo(
-        lib_depends.order(
-            lib_depends.tree(service, config["services"]),
+        "\n".join(
+            lib_depends.order(
+                lib_depends.tree(service, config["services"]),
+            )
         )
     )
