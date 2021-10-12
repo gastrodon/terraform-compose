@@ -4,5 +4,5 @@ import app
 
 
 @app.app.command()
-def graph():
+async def graph():
     typer.echo("graph")
