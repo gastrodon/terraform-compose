@@ -12,7 +12,9 @@ def verify(services: Dict[str, any]) -> Optional[List[str]]:
 
 
 def tree(
-    service: str, services: Dict[str, any], parents: Optional[Set[str]] = []
+    service: str,
+    services: Dict[str, any],
+    parents: Optional[Set[str]] = [],
 ) -> Dict[str, any]:
     """
     Build a dependency tree for some service
