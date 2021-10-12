@@ -12,4 +12,8 @@ def depends(
 ):
     config = load.from_name(file)
 
-    typer.echo(lib_depends.tree(service, config["services"]))
+    typer.echo(
+        lib_depends.render(
+            lib_depends.tree(service, config["services"]),
+        )
+    )

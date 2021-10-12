@@ -2,6 +2,8 @@ from typing import Any, Dict, List, Optional, Set
 
 from library.types.exceptions import CircularDependsOn
 
+TAB: str = "\t"
+
 
 def verify(services: Dict[str, Any]) -> Optional[List[str]]:
     """
@@ -44,3 +46,11 @@ def tree(
 
 def order(services: Dict[str, Any]) -> List[str]:
     ...
+
+
+def render(tree: Dict[str, Any], level: int = 0) -> str:
+    depends: list[Any] = tree.get("depends_on", [])
+
+    return f"\n{'  '*level} | ".join(
+        [tree["name"], *(render(it, level + 1) for it in depends)]
+    )
