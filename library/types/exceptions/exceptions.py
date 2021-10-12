@@ -3,7 +3,7 @@ from enum import IntEnum
 from os import sys
 
 import typer
-from typer import color
+from typer import colors
 
 ERR_CIRCULAR_DEPENDS_ON = """\
 {service} has a circular dependency!
@@ -16,7 +16,7 @@ class Codes(IntEnum):
 
 class RenderException(Exception):
     def exit(self):  # TODO allow for not exiting when testing
-        typer.secho(self.render, color=color.RED, err=True)
+        typer.secho(self.render, color=colors.RED, err=True)
         sys.exit(self.code)
 
     @property
