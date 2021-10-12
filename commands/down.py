@@ -4,5 +4,5 @@ import app
 
 
 @app.app.command()
-def graph():
-    typer.echo("graph")
+def down():
+    typer.echo("down")
