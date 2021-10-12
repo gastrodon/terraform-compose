@@ -21,17 +21,17 @@ def tree(
 
     {
         "name": "service-name",
-        "depends_on": [{...}, ...]
+        "depends-on": [{...}, ...]
     }
     """
     if service in (parents or []):
         CircularDependsOn(service, parents or []).exit()
 
-    depends_on = services[service].get("depends_on", [])
+    depends_on = services[service].get("depends-on", [])
 
     return {
         "name": service,
-        "depends_on": [
+        "depends-on": [
             tree(
                 it,
                 services,
@@ -47,7 +47,7 @@ def uniqie(items: List[str]) -> List[str]:
 
 
 def order(tree: Dict[str, Any], accounted: List[str] = []) -> List[str]:
-    depends: list[Any] = tree.get("depends_on")
+    depends: list[Any] = tree.get("depends-on")
 
     if not depends:
         return [tree["name"]]
@@ -66,7 +66,7 @@ def order(tree: Dict[str, Any], accounted: List[str] = []) -> List[str]:
 
 
 def render(tree: Dict[str, Any], level: int = 0) -> str:
-    depends: list[Any] = tree.get("depends_on", [])
+    depends: list[Any] = tree.get("depends-on", [])
 
     return f"\n{'  '*level} | ".join(
         [tree["name"], *(render(it, level + 1) for it in depends)]
