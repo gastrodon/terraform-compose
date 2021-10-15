@@ -7,6 +7,9 @@ class Item:
         self.required = required
         self.type = type
 
+    def validate(self, *args, **kwargs) -> bool:
+        return True  # TODO
+
 
 APPLY: Dict[str, Item] = {
     "auto-approve": Item(False, False, bool),
