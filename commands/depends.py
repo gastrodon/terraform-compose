@@ -12,10 +12,10 @@ def handle_depends(
     file: str = options.file,
     services: List[str] = options.services,
 ):
-    config = load.from_name(file)
-    services = services or config["services"].keys()
+    compose = load.from_name(file)
+    services = services or compose["services"].keys()
 
-    trees = [depends.tree(service, config["services"]) for service in services]
+    trees = [depends.tree(service, compose["services"]) for service in services]
 
     typer.echo("\n\n".join(map(depends.render_tree, trees)))
 

@@ -4,7 +4,7 @@ from typing import List
 import typer
 
 import app
-from library import depends, load
+from library import config, depends, load
 from library.config import Kind
 from library.types import options
 
@@ -14,15 +14,15 @@ def handle_plan(
     services: List[str] = options.services,
     file: str = options.file,
 ):
-    config = load.from_name(file)
-    services = services or config["services"].keys()
+    compose = load.from_name(file)
+    services = services or compose["services"].keys()
 
     order = [
         service
         for group in [
             depends.order(
-                depends.tree(it, config["services"]),
-                config["services"],
+                depends.tree(it, compose["services"]),
+                compose["services"],
             )
             for it in services
         ]
@@ -30,7 +30,7 @@ def handle_plan(
     ]
 
     configs = {
-        service: config.read(Kind.plan, config["services"][service])
+        service: config.read(Kind.plan, compose["services"][service])
         for service in order
     }
 
