@@ -1,6 +1,6 @@
 import app
 
 
-@app.app.command()
-def destroy():
+@app.app.command(name="destroy")
+def handle_destroy():
     ...

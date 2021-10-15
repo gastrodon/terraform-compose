@@ -4,13 +4,13 @@ from typing import List
 import typer
 
 import app
-from library import config as lib_config, depends as depends, load
+from library import depends, load
 from library.config import Kind
 from library.types import options
 
 
-@app.app.command()
-def plan(
+@app.app.command(name="plan")
+def handle_plan(
     services: List[str] = options.services,
     file: str = options.file,
 ):
@@ -30,7 +30,7 @@ def plan(
     ]
 
     configs = {
-        service: lib_config.read(Kind.plan, config["services"][service])
+        service: config.read(Kind.plan, config["services"][service])
         for service in order
     }
 

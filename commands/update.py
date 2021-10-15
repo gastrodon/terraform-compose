@@ -1,6 +1,6 @@
 import app
 
 
-@app.app.command()
-def update():
+@app.app.command(name="update")
+def handle_update():
     ...

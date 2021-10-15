@@ -1,6 +1,6 @@
 import app
 
 
-@app.app.command()
-def apply():
+@app.app.command(name="handle")
+def handle_apply():
     ...

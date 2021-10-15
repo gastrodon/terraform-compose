@@ -1,6 +1,6 @@
 import app
 
 
-@app.app.command()
-def outputs():
+@app.app.command(name="outputs")
+def handle_outputs():
     ...

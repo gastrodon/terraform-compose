@@ -1,6 +1,6 @@
 import app
 
 
-@app.app.command()
-def config():
+@app.app.command(name="config")
+def handle_config():
     ...
