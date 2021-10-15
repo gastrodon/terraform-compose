@@ -1,10 +1,12 @@
 import enum
+import os
 from enum import IntEnum
 from os import sys
 
 import typer
 from typer import colors
 
+IS_TEST = os.getenv("IS_TEST") == "true"
 ERR_CIRCULAR_DEPENDS_ON = """\
 {service} has a circular dependency!
     {path}"""
@@ -15,9 +17,13 @@ class Codes(IntEnum):
 
 
 class RenderException(Exception):
-    def exit(self):  # TODO allow for not exiting when testing
+    def exit(self):
         typer.secho(self.render, fg=colors.RED, err=True)
-        sys.exit(self.code)
+
+        if IS_TEST:
+            raise self
+
+        sys.exit(self.code)  # pragma: not covered
 
     @property
     def render(self) -> str:
