@@ -1,3 +1,4 @@
+import json
 from typing import List
 
 import typer
@@ -34,4 +35,4 @@ def plan(
     }
 
     typer.echo(order)
-    typer.echo(configs)
+    typer.echo(json.dumps(configs))

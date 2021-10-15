@@ -1,3 +1,5 @@
+from typing import List
+
 import typer
 
 import app
@@ -8,22 +10,18 @@ from library.types import options
 @app.app.command()
 def depends(
     file: str = options.file,
-    service: str = options.service,
+    services: List[str] = options.services,
 ):
     config = load.from_name(file)
+    services = services or config["services"].keys()
 
-    typer.echo(
-        lib_depends.render(
-            lib_depends.tree(service, config["services"]),
-        )
-    )
+    trees = [lib_depends.tree(service, config["services"]) for service in services]
 
-    typer.echo("\n")
+    typer.echo("\n\n".join(map(lib_depends.render_tree, trees)))
 
-    typer.echo(
-        "\n".join(
-            lib_depends.order(
-                lib_depends.tree(service, config["services"]),
-            )
-        )
-    )
+    ordered = [
+        service for ordered in map(lib_depends.order, trees) for service in ordered
+    ]
+
+    typer.echo("\nservices should be brought up in the following order:")
+    typer.echo("\n".join(lib_depends.uniqie(ordered)))

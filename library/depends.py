@@ -65,9 +65,9 @@ def order(tree: Dict[str, Any], accounted: List[str] = []) -> List[str]:
     )
 
 
-def render(tree: Dict[str, Any], level: int = 0) -> str:
+def render_tree(tree: Dict[str, Any], level: int = 0) -> str:
     depends: list[Any] = tree.get("depends-on", [])
 
     return f"\n{'  '*level} | ".join(
-        [tree["name"], *(render(it, level + 1) for it in depends)]
+        [tree["name"], *(render_tree(it, level + 1) for it in depends)]
     )
