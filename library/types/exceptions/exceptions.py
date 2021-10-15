@@ -49,6 +49,9 @@ class CircularDependsOn(RenderException):
     _code = Codes.ERR_CIRCULAR_DEPENDS_ON
 
     def __init__(self, service: str, parents: list[str]):
+        self.service = service
+        self.parents = parents
+
         self._render = ERR_CIRCULAR_DEPENDS_ON.format(
             service=service,
             path=" -> ".join((*parents, service)),
@@ -61,6 +64,11 @@ class ValidateFailed(RenderException):
     _code = Codes.ERR_VALIDATE_FAILED
 
     def __init__(self, service: str, key: str, want: Type, value: Any):
+        self.service = service
+        self.key = key
+        self.want = want
+        self.value = value
+
         self._render = ERR_VALIDATE_FAILED.format(
             service=service,
             key=key,
