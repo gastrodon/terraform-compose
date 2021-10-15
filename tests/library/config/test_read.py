@@ -12,6 +12,7 @@ class TestRead(TestCase):
 
     def test_read_plan(self):
         part = {
+            "path": ".",
             "refresh-only": True,
             "target": "service-name",
             "var-files": ["./foo/bar.tfvar"],
@@ -27,11 +28,14 @@ class TestRead(TestCase):
             "replace": None,
         }
 
-        assert config.read(Kind.plan, "name", part) == service_config
+        try:
+            assert config.read(Kind.plan, "name", part) == service_config
+        except ValidateFailed as err:
+            raise Exception(err.render)
 
     def test_read_plan_fail(self):
         service = "name"
-        part = {"var-files": "foobar"}
+        part = {"path": ".", "var-files": "foobar"}
 
         try:
             config.read(Kind.plan, service, part)
