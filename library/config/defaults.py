@@ -4,7 +4,7 @@ from library.types.item import Item
 
 APPLY: Dict[str, Item] = {
     "auto-approve": Item(False, False, bool),
-    "color": Item(True, False, bool),
+    "no-color": Item(False, False, bool),
     "compact-warnings": Item(False, False, bool),
     "lock": Item(False, False, bool),
     "state-backup": Item(None, False, str),
