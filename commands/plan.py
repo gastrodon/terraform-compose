@@ -30,7 +30,7 @@ def handle_plan(
     ]
 
     configs = {
-        service: config.read(Kind.plan, compose["services"][service])
+        service: config.read(Kind.plan, service, compose["services"][service])
         for service in order
     }
 

@@ -2,18 +2,29 @@ import enum
 import os
 from enum import IntEnum
 from os import sys
+from typing import Any
 
 import typer
 from typer import colors
 
 IS_TEST = os.getenv("IS_TEST") == "true"
+
 ERR_CIRCULAR_DEPENDS_ON = """\
 {service} has a circular dependency!
     {path}"""
 
+ERR_VALIDATE_FAILED = """\
+{service}.{key} cannot be validated!
+    have: {have}
+    want: {want}
+"""
+
+Type = Any
+
 
 class Codes(IntEnum):
     ERR_CIRCULAR_DEPENDS_ON: int = enum.auto()
+    ERR_VALIDATE_FAILED: int = enum.auto()
 
 
 class RenderException(Exception):
@@ -44,3 +55,15 @@ class CircularDependsOn(RenderException):
         )
 
         super().__init__(self._render)
+
+
+class ValidateFailed(RenderException):
+    _code = Codes.ERR_VALIDATE_FAILED
+
+    def __init__(self, service: str, key: str, want: Type, value: Any):
+        self._render = ERR_VALIDATE_FAILED.format(
+            service=service,
+            key=key,
+            want=want,
+            have=type(value),
+        )
