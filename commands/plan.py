@@ -4,9 +4,9 @@ from typing import List
 import typer
 
 import app
-from library import config, depends, load
-from library.config import Kind
+from library import config, depends
 from library.types import options
+from library.types.kind import Kind
 
 
 @app.app.command(name="plan")
@@ -14,7 +14,7 @@ def handle_plan(
     services: List[str] = options.services,
     file: str = options.file,
 ):
-    compose = load.from_name(file)
+    compose = config.read_file(file)
     services = services or compose["services"].keys()
 
     order = [

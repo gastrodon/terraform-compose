@@ -3,7 +3,7 @@ from typing import List
 import typer
 
 import app
-from library import depends, load
+from library import config, depends
 from library.types import options
 
 
@@ -12,7 +12,7 @@ def handle_depends(
     file: str = options.file,
     services: List[str] = options.services,
 ):
-    compose = load.from_name(file)
+    compose = config.read_file(file)
     services = services or compose["services"].keys()
 
     trees = [depends.tree(service, compose["services"]) for service in services]

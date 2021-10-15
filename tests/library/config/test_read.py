@@ -1,8 +1,8 @@
 from unittest import TestCase
 
 from library import config
-from library.config.kind import Kind
 from library.types.exceptions import ValidateFailed
+from library.types.kind import Kind
 
 
 class TestRead(TestCase):

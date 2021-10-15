@@ -1,7 +1,14 @@
 from typing import Any, Dict
 
-from library.config.kind import Kind
+import yaml
+
 from library.types.exceptions import ValidateFailed
+from library.types.kind import Kind
+
+
+def read_file(path: str):
+    with open(path) as stream:
+        return yaml.safe_load(stream)
 
 
 def read(kind: Kind, service: str, service_config: Dict[str, Any]) -> Dict[str, Any]:

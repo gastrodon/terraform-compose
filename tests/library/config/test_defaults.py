@@ -1,7 +1,7 @@
 from typing import Any, Dict, List, Optional, Union
 from unittest import TestCase
 
-from library.config.defaults import Item
+from library.types.item import Item
 
 
 class TestItemValidateAgainst(TestCase):
