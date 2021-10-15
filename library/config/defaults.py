@@ -54,5 +54,5 @@ PLAN: Dict[str, Item] = {
     "replace": Item(None, False, str),
     "target": Item(None, False, str),
     "var-files": Item([], False, List[str]),
-    "vars": Item({}, False, [Dict[str, str]]),
+    "vars": Item({}, False, Dict[str, str]),
 }
