@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, _GenericAlias
+from typing import Any, Dict, List, Optional, _GenericAlias, _UnionGenericAlias
 
 
 class Item:
@@ -11,6 +11,11 @@ class Item:
     def validate_against(self, value: Any, type: Any) -> bool:
         if type == Any:
             return True
+
+        if isinstance(type, _UnionGenericAlias):
+            return any(
+                [self.validate_against(value, option) for option in type.__args__]
+            )
 
         if isinstance(type, _GenericAlias):
             if type.__origin__ == list and isinstance(value, list):
@@ -51,8 +56,8 @@ DESTROY: Dict[str, Item] = {**APPLY}
 PLAN: Dict[str, Item] = {
     "refresh-only": Item(False, False, bool),
     "refresh": Item(False, False, bool),
-    "replace": Item(None, False, str),
-    "target": Item(None, False, str),
+    "replace": Item(None, False, Optional[str]),
+    "target": Item(None, False, Optional[str]),
     "var-files": Item([], False, List[str]),
     "vars": Item({}, False, Dict[str, str]),
 }

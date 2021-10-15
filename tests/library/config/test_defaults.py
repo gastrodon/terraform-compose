@@ -1,4 +1,4 @@
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional, Union
 from unittest import TestCase
 
 from library.config.defaults import Item
@@ -31,6 +31,20 @@ class TestItemValidateAgainst(TestCase):
         assert not Item.validate_against({1: 1, "foo": 2}, Dict[str, int])
         assert not Item.validate_against({"1": 1, "foo": "bar"}, Dict[str, int])
         assert not Item.validate_against({"1": 1, "foo": 2}, Dict[int, int])
+
+    def test_option(self):
+        assert Item.validate_against(1, Optional[int])
+        assert Item.validate_against(None, Optional[int])
+        assert not Item.validate_against("1", Optional[int])
+
+    def test_union(self):
+        assert Item.validate_against(1, Union[int, str])
+        assert Item.validate_against("1", Union[int, str])
+        assert not Item.validate_against(None, Union[int, str])
+
+        assert Item.validate_against(1, Optional[Union[int, str]])
+        assert Item.validate_against("1", Optional[Union[int, str]])
+        assert Item.validate_against(None, Optional[Union[int, str]])
 
     def test_nested(self):
         assert Item.validate_against(
@@ -96,6 +110,19 @@ class TestItemValidate(TestCase):
         assert not pig.validate({1: 1, 2: "foobar"})
         assert not pig.validate([1, "foo", 2, "foobar"])
         assert not pig.validate({1: "foo", "2": "foobar"})
+
+    def test_option(self):
+        pig: Item = Item(None, False, Optional[int])
+        assert pig.validate(1)
+        assert pig.validate(None)
+        assert not pig.validate("1")
+
+    def test_union(self):
+        pig: Item = Item(None, False, Union[int, str])
+
+        assert pig.validate(1)
+        assert pig.validate("1")
+        assert not pig.validate(None)
 
     def test_any(self):
         pig: Item = Item(None, False, Any)
