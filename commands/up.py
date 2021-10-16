@@ -9,8 +9,8 @@ from library.types import options
 from library.types.kind import Kind
 
 
-@app.app.command(name="plan")
-def handle_plan(
+@app.app.command(name="up")
+def handle_up(
     services: List[str] = options.services,
     file: str = options.file,
 ):
