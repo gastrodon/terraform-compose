@@ -1,9 +1,9 @@
-import json
 from typing import List
 
 import typer
 
 import app
+from library import terraform  # noqa
 from library import config, depends
 from library.types import options
 from library.types.kind import Kind
@@ -34,5 +34,11 @@ def handle_plan(
         for service in order
     }
 
-    typer.echo(order)
-    typer.echo(json.dumps(configs))
+    plans = [
+        terraform.do(Kind.plan, key, [], {**value, "out": "terraform-compose-tfplan"})
+        for key, value in configs.items()
+    ]
+
+    for it in plans:
+        typer.echo(it[1])
+        typer.echo(it[2])
