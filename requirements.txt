@@ -1,3 +1,2 @@
-python-terraform
 pyyaml
 typer
