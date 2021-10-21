@@ -25,4 +25,4 @@ def order_levels(trees: List[Dict[str, Any]]) -> List[List[str]]:
 
 
 def order_flat(trees: List[Dict[str, Any]]) -> List[str]:
-    return [service for group in map(order_levels, trees) for service in group]
+    return [service for group in order_levels(trees) for service in group]
