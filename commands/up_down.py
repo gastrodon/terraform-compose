@@ -4,8 +4,7 @@ from typing import Any, Dict, List
 import typer
 
 import app
-from library import terraform  # noqa
-from library import config, depends
+from library import config, depends, terraform
 from library.types import options
 from library.types.kind import Kind
 
@@ -54,24 +53,20 @@ def do_plan_apply(
         for service in gather_services(services, compose)[:: -1 if destroy else 1]
     }
 
-    for key, config_set in configs.items():
-        for it in config_set.values():
-            code, stdout, stderr = terraform.do(it["kind"], it["args"], it["kwargs"])
+    for name, config_set in configs.items():
+        code, stdout, stderr = terraform.do_up(name, config_set)
 
-            if stdout:
-                typer.secho(stdout)
-
+        if code:
             if stderr:
                 typer.secho(stderr, err=True)
 
-            if code != 0:
-                typer.secho(f"terraform exited with code {code}, continue?")
+            typer.secho(f"terraform exited with code {code}, continue?")
 
-                try:
-                    if input().lower() != "y":
-                        sys.exit(code)
-                except KeyboardInterrupt:
+            try:
+                if input().lower() != "y":
                     sys.exit(code)
+            except KeyboardInterrupt:
+                sys.exit(code)
 
 
 @app.app.command(name="up")
