@@ -21,7 +21,14 @@ def do_up(config_set: Dict[str, Any]) -> (int, str, str):
     )
 
     if code:
-        return code, stdout, stderr
+        raise Exception(
+            "\n\n".join(
+                filter(
+                    lambda it: it,
+                    [f"terraform exited with code {code}", stdout, stderr],
+                )
+            )
+        )
 
     typer.echo(status.phase_next().render(width()))
 
