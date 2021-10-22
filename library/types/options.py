@@ -1,5 +1,8 @@
 from typer import Option
 
+actions: Option = Option(
+    None, "-a", "--actions", help="Actions to target. Can be used multiple times"
+)
 file: Option = Option(
     "terraform-compose.yml", "-f", "--file", help="Compose file top read"
 )
@@ -8,5 +11,5 @@ services: Option = Option(
     None, "-s", "--services", help="Services to target. Can be used multiple times"
 )
 upgrade: Option = Option(
-    False, "-u", "--upgrade", "Upgrade terraform providers and modules"
+    False, "-u", "--upgrade", help="Upgrade terraform providers and modules"
 )
