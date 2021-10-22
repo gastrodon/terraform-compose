@@ -3,7 +3,7 @@ from typing import Any, Dict
 import yaml
 
 from library.types.exceptions import ValidateFailed
-from library.types.kind import Kind
+from library.types.item import Item
 
 
 def read_file(path: str):
@@ -11,9 +11,11 @@ def read_file(path: str):
         return yaml.safe_load(stream)
 
 
-def read(kind: Kind, service: str, service_config: Dict[str, Any]) -> Dict[str, Any]:
-    schema = kind.schema
-
+def read(
+    schema: Dict[str, Item],
+    service: str,
+    service_config: Dict[str, Any],
+) -> Dict[str, Any]:
     values = {
         key: service_config.get(
             key,

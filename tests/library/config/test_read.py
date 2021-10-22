@@ -1,8 +1,8 @@
 from unittest import TestCase
 
 from library import config
+from library.config.defaults import PLAN
 from library.types.exceptions import ValidateFailed
-from library.types.kind import Kind
 
 
 class TestRead(TestCase):
@@ -29,7 +29,7 @@ class TestRead(TestCase):
         }
 
         try:
-            assert config.read(Kind.plan, "name", part) == service_config
+            assert config.read(PLAN, "name", part) == service_config
         except ValidateFailed as err:
             raise Exception(err.render)
 
@@ -38,7 +38,7 @@ class TestRead(TestCase):
         part = {"path": ".", "var-files": "foobar"}
 
         try:
-            config.read(Kind.plan, service, part)
+            config.read(PLAN, service, part)
             raise AssertionError
 
         except ValidateFailed as err:
