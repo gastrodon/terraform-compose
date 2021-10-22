@@ -49,3 +49,11 @@ INIT: Dict[str, Item] = {
 OUTPUT: Dict[str, Item] = {
     **shared,
 }
+
+REFRESH: Dict[str, Item] = {
+    **shared,
+    "input": Item(False, False, bool),
+    "target": Item(None, False, Optional[str]),
+    "var-files": Item([], False, List[str]),
+    "vars": Item(dict(), False, Dict[str, str]),
+}
