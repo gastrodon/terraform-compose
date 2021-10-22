@@ -28,20 +28,24 @@ class TestRead(TestCase):
             "replace": None,
         }
 
+        name = "name"
+        compose = {"services": {name: part}}
+
         try:
-            assert config.read(PLAN, "name", part) == service_config
+            assert config.read(PLAN, name, compose) == service_config
         except ValidateFailed as err:
             raise Exception(err.render)
 
     def test_read_plan_fail(self):
-        service = "name"
+        name = "name"
         part = {"path": ".", "var-files": "foobar"}
+        compose = {"services": {name: part}}
 
         try:
-            config.read(PLAN, service, part)
+            config.read(PLAN, name, compose)
             raise AssertionError
 
         except ValidateFailed as err:
-            assert err.service == "name"
+            assert err.service == name
             assert err.key == "var-files"
             assert err.value == part["var-files"]

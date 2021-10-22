@@ -12,12 +12,10 @@ def read_file(path: str):
 
 
 def read(
-    schema: Dict[str, Item],
-    service: str,
-    service_config: Dict[str, Any],
+    schema: Dict[str, Item], service: str, compose: Dict[str, any]
 ) -> Dict[str, Any]:
     values = {
-        key: service_config.get(
+        key: compose["services"][service].get(  # TODO validate compose structure
             key,
             schema[key].default,
         )
