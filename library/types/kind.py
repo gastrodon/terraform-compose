@@ -2,7 +2,7 @@ import enum
 from enum import Enum
 from typing import Dict
 
-from library.config.defaults import APPLY, DESTROY, INIT, OUTPUT, PLAN, REFRESH
+from library.config.defaults import APPLY, DESTROY, INIT, OUTPUT, PLAN, REFRESH, SHOW
 from library.types.item import Item
 
 
@@ -13,6 +13,7 @@ class Kind(Enum):
     output = enum.auto()
     plan = enum.auto()
     refresh = enum.auto()
+    show = enum.auto()
 
     @property
     def schema(self) -> Dict[str, Item]:
@@ -23,4 +24,5 @@ class Kind(Enum):
             Kind.output: OUTPUT,
             Kind.plan: PLAN,
             Kind.refresh: REFRESH,
+            Kind.show: SHOW,
         }[self]

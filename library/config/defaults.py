@@ -4,6 +4,7 @@ from library.types.item import Item
 
 shared: Dict[str, Item] = {
     "path": Item(None, True, str),
+    "json": Item(True, False, bool),
 }
 
 APPLY: Dict[str, Item] = {
@@ -56,4 +57,8 @@ REFRESH: Dict[str, Item] = {
     "target": Item(None, False, Optional[str]),
     "var-files": Item([], False, List[str]),
     "vars": Item(dict(), False, Dict[str, str]),
+}
+
+SHOW: Dict[str, Item] = {
+    **shared,
 }
