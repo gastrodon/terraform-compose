@@ -1,4 +1,3 @@
-from commands.config import handle_config  # noqa
 from commands.depends import handle_depends  # noqa
 from commands.init import handle_init  # noqa
 from commands.outputs import handle_outputs  # noqa
