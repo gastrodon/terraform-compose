@@ -1,8 +1,6 @@
-import subprocess
+import os
 from os import path
 from typing import Any, Dict, List
-
-from library.types.kind import Kind
 
 PATH_KEYS: List[str] = [
     "state-backup",
@@ -11,33 +9,6 @@ PATH_KEYS: List[str] = [
 ]
 
 SKIP_KEYS: List[str] = ["plan", "path", "var-files", "vars"]
-
-
-def do_plan(args: List[str], config: Dict[str, Any]) -> (int, str, str):
-    arguments = [
-        "terraform",
-        f"-chdir={config['path']}",
-        "plan",
-        *(it for pair in argument_pairs(config) for it in pair),
-        *args,
-    ]
-
-    ran = subprocess.run(arguments, capture_output=True, text=True)
-    return ran.returncode, ran.stdout, ran.stderr
-
-
-def do_apply(args: List[str], config: Dict[str, Any]) -> (int, str, str):
-
-    arguments = [
-        "terraform",
-        f"-chdir={config['path']}",
-        "apply",
-        *(it for pair in argument_pairs(config) for it in pair),
-        *args,
-    ]
-
-    ran = subprocess.run(arguments, capture_output=True, text=True)
-    return ran.returncode, ran.stdout, ran.stderr
 
 
 def sanitize_config(config: Dict[str, Any]) -> Dict[str, Any]:
@@ -79,9 +50,5 @@ def argument_pairs(config: Dict[str, Any]) -> List[List[str]]:
     )
 
 
-def do(kind: Kind, args: List[str], config: Dict[str, Any]) -> (int, str, str):
-    if kind == Kind.plan:
-        return do_plan(args, config)
-
-    if kind == Kind.apply:
-        return do_apply(args, config)
+def width() -> int:
+    return min(40, os.get_terminal_size().columns)
