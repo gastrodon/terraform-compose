@@ -16,6 +16,10 @@ def order_levels(trees: List[Dict[str, Any]]) -> List[List[str]]:
         for flattened in [tree.flat_tree(it) for it in trees]
         for service in flattened
     ]
+
+    if not services_flat:
+        return []
+
     ordered = [set() for _ in range(max(it["level"] for it in services_flat) + 1)]
 
     for service in services_flat:

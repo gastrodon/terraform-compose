@@ -100,6 +100,9 @@ class TestOrderLevels(TestCase):
         self.tree: Dict[str, Any] = depends.dependency_tree("handler", self.services)
         self.ordered: List[List[str]] = depends.order_levels([self.tree])
 
+    def test_ordered_empty(self):
+        assert [] == depends.order_levels([])
+
     def test_root_ordered_last(self):
         assert [self.tree["name"]] == self.ordered[-1]
 
@@ -118,6 +121,9 @@ class TestOrderFlat(TestCase):
         self.services: Dict[str, Any] = yaml.safe_load(SERVICES_YAML)["services"]
         self.tree: Dict[str, Any] = depends.dependency_tree("handler", self.services)
         self.ordered: List[List[str]] = depends.order_flat([self.tree])
+
+    def test_ordered_empty(self):
+        assert [] == depends.order_flat([])
 
     def test_root_ordered_first(self):
         assert self.tree["name"] == self.ordered[-1]
