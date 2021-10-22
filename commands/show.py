@@ -2,6 +2,8 @@ import json
 from multiprocessing import Pool
 from typing import Any, Dict, List
 
+import typer
+
 import app
 from library import config, terraform
 from library.config.defaults import SHOW
@@ -23,8 +25,12 @@ def handle_show(
     services: List[str] = options.services,
     file: str = options.file,
 ):
-    compose = config.read_file(file)
-    configs = [
+    """
+    Show the current state of selected resources
+    state is rendered as JSON
+    """
+    compose: Dict[str, Any] = config.read_file(file)
+    configs: List[str] = [
         {
             "name": service,
             "args": ["-json"],
@@ -40,4 +46,4 @@ def handle_show(
             for key, value in result.items()
         }
 
-    print(json.dumps(results, indent=2, sort_keys=True))
+    typer.echo(json.dumps(results, indent=2, sort_keys=True))

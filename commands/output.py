@@ -9,7 +9,7 @@ from library.types import options
 from library.types.kind import Kind
 
 
-def output_wrapped(config: Dict[str, Any]) -> Dict[str, Any]:
+def output_wrapped(config: Dict[str, Any]) -> Dict[str, Dict[str, Any]]:
     ran = terraform.do(Kind.output, config["args"], config["kwargs"])
 
     if ran[0]:
@@ -23,8 +23,12 @@ def handle_output(
     services: List[str] = options.services,
     file: str = options.file,
 ):
-    compose = config.read_file(file)
-    configs = [
+    """
+    Collect and show outputs from selected services
+    outputs are rendered as JSON
+    """
+    compose: Dict[str, Any] = config.read_file(file)
+    configs: List[str] = [
         {
             "name": service,
             "args": [],

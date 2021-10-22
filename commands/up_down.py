@@ -11,7 +11,9 @@ from library.types.kind import Kind
 
 
 def gather_services(
-    services: List[str], compose: Dict[str, Any], destroy: False
+    services: List[str],
+    compose: Dict[str, Any],
+    destroy: False,
 ) -> List[List[str]]:
     if destroy:
         skip: Callable[[Dict[str, Any]], bool] = lambda it: it.get("no-destroy")
@@ -31,7 +33,11 @@ def gather_services(
     return depends.order_levels(trees)[:: -1 if destroy else 1]
 
 
-def gather_plan(service: str, compose: Dict[str, Any], destroy: bool = False):
+def gather_plan(
+    service: str,
+    compose: Dict[str, Any],
+    destroy: bool = False,
+) -> Dict[str, Any]:
     return {
         "kind": Kind.plan,
         "args": ["--destroy"] if destroy else [],
@@ -42,7 +48,7 @@ def gather_plan(service: str, compose: Dict[str, Any], destroy: bool = False):
     }
 
 
-def gather_apply(service: str, compose: Dict[str, Any]):
+def gather_apply(service: str, compose: Dict[str, Any]) -> Dict[str, Any]:
     return {
         "kind": Kind.apply,
         "args": ["terraform-compose-tfplan"],
@@ -57,8 +63,8 @@ def do_plan_apply(
     file: str = options.file,
     destroy: bool = False,
 ):
-    compose = config.read_file(file)
-    services = services or compose["services"].keys()
+    compose: Dict[str, Any] = config.read_file(file)
+    services: List[str] = services or compose["services"].keys()
 
     config_groups: List[List[Dict[str, Any]]] = [
         [
@@ -85,6 +91,9 @@ def handle_up(
     services: List[str] = options.services,
     file: str = options.file,
 ):
+    """
+    Bring up selected services and their dependencies
+    """
     do_plan_apply(services, file, destroy=False)
 
 
@@ -93,4 +102,8 @@ def handle_down(
     services: List[str] = options.services,
     file: str = options.file,
 ):
+    """
+    Bring down selected services and their dependants
+    """
+    # TODO docs are wrong
     do_plan_apply(services, file, destroy=True)

@@ -26,8 +26,11 @@ def handle_refresh(
     services: List[str] = options.services,
     file: str = options.file,
 ):
-    compose = config.read_file(file)
-    services = services or compose["services"].keys()
+    """
+    Refresh selected resources
+    """
+    compose: Dict[str, Any] = config.read_file(file)
+    services: List[str] = services or compose["services"].keys()
 
     configs = [
         {

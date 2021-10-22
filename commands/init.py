@@ -27,10 +27,13 @@ def handle_init(
     file: str = options.file,
     upgrade: bool = options.upgrade,
 ):
-    compose = config.read_file(file)
-    services = services or compose["services"].keys()
+    """
+    Initialize selected services
+    """
+    compose: Dict[str, Any] = config.read_file(file)
+    services: List[str] = services or compose["services"].keys()
 
-    configs = [
+    configs: List[Dict[str, Any]] = [
         {
             "name": service,
             "args": [],
