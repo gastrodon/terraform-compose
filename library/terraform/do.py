@@ -13,7 +13,7 @@ def do_plan(args: List[str], config: Dict[str, Any]) -> (int, str, str):
         "terraform",
         f"-chdir={config['path']}",
         "plan",
-        *(it for pair in tools.argument_pairs(config) for it in pair),
+        *tools.unpack(tools.argument_pairs(config)),
         *args,
     ]
 
@@ -26,7 +26,7 @@ def do_apply(args: List[str], config: Dict[str, Any]) -> (int, str, str):
         "terraform",
         f"-chdir={config['path']}",
         "apply",
-        *(it for pair in tools.argument_pairs(config) for it in pair),
+        *tools.unpack(tools.argument_pairs(config)),
         *args,
     ]
 
@@ -34,8 +34,17 @@ def do_apply(args: List[str], config: Dict[str, Any]) -> (int, str, str):
     return ran.returncode, ran.stdout, ran.stderr
 
 
-def do_init(args: List[str], configs: Dict[str, Any]) -> (int, str, str):
-    ...
+def do_init(args: List[str], config: Dict[str, Any]) -> (int, str, str):
+    arguments = [
+        "terraform",
+        f"-chdir={config['path']}",
+        "init",
+        *tools.unpack(tools.argument_pairs(config)),
+        *args,
+    ]
+
+    ran = subprocess.run(arguments, capture_output=True, text=True)
+    return ran.returncode, ran.stdout, ran.stderr
 
 
 def do(kind: Kind, args: List[str], config: Dict[str, Any]) -> (int, str, str):

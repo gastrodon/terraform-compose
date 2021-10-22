@@ -50,5 +50,9 @@ def argument_pairs(config: Dict[str, Any]) -> List[List[str]]:
     )
 
 
+def unpack(pairs: List[List[str]]) -> List[str]:
+    return [it for pair in pairs for it in pair]
+
+
 def width() -> int:
     return min(40, os.get_terminal_size().columns)

@@ -11,14 +11,16 @@ DOTS_OKAY: str = "  ✓"
 
 
 class Status:
-    def __init__(self, name: str):
-        self.name = name
-        self.done = False
+    def __init__(self, name: str, phases: list[str] = PHASES):
+        self.name: str = name
+        self.phases: list[str] = phases
+
+        self.done: bool = False
         self.phase_index: int = 0
 
     @property
     def phase_count(self) -> int:
-        return len(PHASES)
+        return len(self.phases)
 
     def phase_next(self) -> Status:
         self.phase_index = (self.phase_index + 1 + self.phase_count) % self.phase_count
@@ -30,7 +32,7 @@ class Status:
 
     @property
     def phase(self) -> str:
-        return PHASES[self.phase_index]
+        return self.phases[self.phase_index]
 
     @property
     def dot(self) -> str:
