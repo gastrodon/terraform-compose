@@ -1,4 +1,4 @@
-from typing import Any, Dict, List
+from typing import Any, Callable, Dict, List
 
 from library.types.exceptions import CircularDependsOn
 
@@ -20,6 +20,7 @@ def dependency_tree(
     service: str,
     services: Dict[str, Any],
     parents: List[str] = [],
+    skip: Callable[[Dict[str, Any]], bool] = lambda it: False,
 ) -> Dict[str, Any]:
     """
     Given some service name, build a dependency tree for it
@@ -39,11 +40,18 @@ def dependency_tree(
     if service in (parents or []):
         CircularDependsOn(service, parents or []).exit()
 
+    if skip(services[service]):
+        return {}
+
     parents = [*parents, service]
     dependencies = services[service].get("depends-on", [])
     no_level = {
         "name": service,
-        "depends-on": [dependency_tree(it, services, parents) for it in dependencies],
+        "depends-on": [
+            dependency_tree(it, services, parents)
+            for it in dependencies
+            if not skip(services[it])
+        ],
     }
 
     return {**no_level, "level": tree_depth(no_level)}
