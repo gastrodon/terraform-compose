@@ -40,3 +40,7 @@ INIT: Dict[str, Item] = {
     "reconfigure": Item(False, False, bool),
     "upgrade": Item(False, False, bool),
 }
+
+OUTPUT: Dict[str, Item] = {
+    "path": Item(None, True, str),
+}

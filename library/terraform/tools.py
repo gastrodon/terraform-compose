@@ -41,7 +41,7 @@ def sanitize_vars(variables: Dict[str, str]) -> List[List[str]]:
 def argument_pairs(config: Dict[str, Any]) -> List[List[str]]:
     return (
         [
-            [f"-{key}", str(value)]
+            [f"-{key}={str(value)}"]
             for key, value in sanitize_config(config).items()
             if value
         ]

@@ -9,13 +9,14 @@ from library.config.defaults import INIT
 from library.pretty import Status
 from library.terraform import tools
 from library.types import options
+from library.types.kind import Kind
 
 
 def init_wrapped(config: Dict[str, Any]):
     status: Status = Status(config["name"], phases=["initing"])
     typer.echo(status.render(tools.width()))
 
-    terraform.do_init(config["args"], config["kwargs"])
+    terraform.do(Kind.init, config["args"], config["kwargs"])
 
     typer.echo(status.finish().render(tools.width()))
 
