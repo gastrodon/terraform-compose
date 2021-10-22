@@ -7,10 +7,12 @@ from library.types import options
 from library.types.kind import Kind
 
 
-def gather_services(services: List[str], compose: Dict[str, Any]) -> List[List[str]]:
+def gather_services(
+    services: List[str], compose: Dict[str, Any], destroy: False
+) -> List[List[str]]:
     return depends.order_levels(
         [depends.dependency_tree(service, compose["services"]) for service in services]
-    )
+    )[:: -1 if destroy else 1]
 
 
 def gather_plan(service: str, compose: Dict[str, Any], destroy: bool = False):
@@ -51,7 +53,7 @@ def do_plan_apply(
             }
             for service in cluster
         ]
-        for cluster in gather_services(services, compose)[:: -1 if destroy else 1]
+        for cluster in gather_services(services, compose, destroy)
     ]
 
     for group in config_groups:
