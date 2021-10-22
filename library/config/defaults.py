@@ -35,6 +35,7 @@ INIT: Dict[str, Item] = {
     "get": Item(True, False, bool),
     "input": Item(False, False, bool),
     "migrate-state": Item(False, False, bool),
+    "path": Item(None, True, str),
     "plugin-dir": Item([], False, List[str]),
     "reconfigure": Item(False, False, bool),
     "upgrade": Item(False, False, bool),
