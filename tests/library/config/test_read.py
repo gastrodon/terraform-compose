@@ -25,6 +25,7 @@ class TestRead(TestCase):
         service_config = {
             **part,
             "input": False,
+            "json": True,
             "refresh": False,
             "replace": None,
         }
