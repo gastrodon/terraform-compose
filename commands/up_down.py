@@ -5,6 +5,7 @@ import typer
 
 import app
 from library import config, depends, terraform
+from library.config.defaults import APPLY, PLAN
 from library.types import options
 from library.types.kind import Kind
 
@@ -18,8 +19,13 @@ def gather_services(
         skip: Callable[[Dict[str, Any]], bool] = lambda it: False
 
     trees: List[Dict[str, Any]] = [
-        depends.dependency_tree(service, compose["services"], skip=skip)
-        for service in services
+        *filter(
+            lambda it: len(it) != 0,
+            [
+                depends.dependency_tree(service, compose["services"], skip=skip)
+                for service in services
+            ],
+        )
     ]
 
     return depends.order_levels(trees)[:: -1 if destroy else 1]
@@ -30,7 +36,7 @@ def gather_plan(service: str, compose: Dict[str, Any], destroy: bool = False):
         "kind": Kind.plan,
         "args": ["--destroy"] if destroy else [],
         "kwargs": {
-            **config.read(Kind.plan, service, compose["services"][service]),
+            **config.read(PLAN, service, compose),
             "out": "terraform-compose-tfplan",
         },
     }
@@ -41,7 +47,7 @@ def gather_apply(service: str, compose: Dict[str, Any]):
         "kind": Kind.apply,
         "args": ["terraform-compose-tfplan"],
         "kwargs": {
-            **config.read(Kind.apply, service, compose["services"][service]),
+            **config.read(APPLY, service, compose),
         },
     }
 
