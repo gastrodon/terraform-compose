@@ -5,39 +5,27 @@ PHASES: list[str] = [
     "applying",
 ]
 
-DOTS: list[str] = [
-    ".  ",
-    " . ",
-    "  .",
-    " . ",
-]
 
-DOTS_DONE: str = "..."
+DOTS_DOING: str = "..."
+DOTS_OKAY: str = "  ✓"
 
 
-class Animation:
+class Status:
     def __init__(self, name: str):
         self.name = name
         self.done = False
         self.phase_index: int = 0
-        self.dot_index: int = 0
 
     @property
     def phase_count(self) -> int:
         return len(PHASES)
 
-    @property
-    def dot_count(self) -> int:
-        return len(DOTS)
-
-    @property
-    def phase_next(self) -> Animation:
+    def phase_next(self) -> Status:
         self.phase_index = (self.phase_index + 1 + self.phase_count) % self.phase_count
         return self
 
-    @property
-    def dot_next(self) -> Animation:
-        self.dot_index = (self.dot_index + 1 + self.dot_count) % self.dot_count
+    def finish(self) -> Status:
+        self.done = True
         return self
 
     @property
@@ -46,12 +34,7 @@ class Animation:
 
     @property
     def dot(self) -> str:
-        return DOTS_DONE if self.dot_index == -1 else DOTS[self.dot_index]
-
-    @property
-    def finished(self) -> Animation:
-        self.dot_index = -1
-        return self
+        return DOTS_DOING if not self.done else DOTS_OKAY
 
     def render(self, lines: int) -> str:
         left: str = f"{self.phase} {self.name}"
