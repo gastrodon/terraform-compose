@@ -11,7 +11,10 @@ APPLY: Dict[str, Item] = {
     "state": Item(None, False, Optional[str]),
 }
 
-DESTROY: Dict[str, Item] = {**APPLY}
+DESTROY: Dict[str, Item] = {
+    **APPLY,
+    "no-destroy": Item(False, False, bool),
+}
 
 PLAN: Dict[str, Item] = {
     "path": Item(None, True, str),
