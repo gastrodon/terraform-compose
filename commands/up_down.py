@@ -20,16 +20,8 @@ def gather_services(
     else:
         skip: Callable[[Dict[str, Any]], bool] = lambda it: False
 
-    trees: List[Dict[str, Any]] = [
-        *filter(
-            lambda it: len(it) != 0,
-            [
-                depends.dependency_tree(service, compose["services"], skip=skip)
-                for service in services
-            ],
-        )
-    ]
-
+    root = depends.root_dependency_tree(compose["services"], skip=skip, inverse=destroy)
+    trees = [*filter(bool, [depends.pluck(service, root) for service in services])]
     return depends.order_levels(trees)[:: -1 if destroy else 1]
 
 

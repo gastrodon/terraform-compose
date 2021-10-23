@@ -1,4 +1,4 @@
-from typing import Any, Dict, List
+from typing import Any, Callable, Dict, List
 
 import typer
 
@@ -23,6 +23,7 @@ def render_graph(trees: List[Dict[str, Any]]) -> List[str]:
 def handle_depends(
     file: str = options.file,
     services: List[str] = options.services,
+    destroy: bool = options.destroy,
     graph: bool = options.graph,
 ):
     """
@@ -32,8 +33,17 @@ def handle_depends(
     compose: Dict[str, Any] = config.read_file(file)
     services: List[str] = services or compose["services"].keys()
 
+    if destroy:
+        skip: Callable[[Dict[str, Any]], bool] = lambda it: it.get("no-destroy")
+    else:
+        skip: Callable[[Dict[str, Any]], bool] = lambda it: False
+
+    root: Dict[str, Any] = depends.root_dependency_tree(
+        compose["services"], inverse=destroy, skip=skip
+    )
+
     trees: Dict[str, Any] = [
-        depends.dependency_tree(service, compose["services"]) for service in services
+        *filter(bool, [depends.pluck(service, root) for service in services])
     ]
 
     rendered: List[str] = render_graph(trees) if graph else render_groups(trees)

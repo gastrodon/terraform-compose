@@ -13,3 +13,6 @@ services: Option = Option(
 upgrade: Option = Option(
     False, "-u", "--upgrade", help="Upgrade terraform providers and modules"
 )
+destroy: Option = Option(
+    False, "--destroy", help="Destroy resources instead of creating them"
+)
