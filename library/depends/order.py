@@ -25,7 +25,7 @@ def order_levels(trees: List[Dict[str, Any]]) -> List[List[str]]:
     for service in services_flat:
         ordered[service["level"]].add(service["name"])
 
-    return [*map(list, ordered)]
+    return [*filter(bool, map(list, ordered))]
 
 
 def order_flat(trees: List[Dict[str, Any]]) -> List[str]:
