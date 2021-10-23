@@ -1,3 +1,4 @@
+import json
 import subprocess
 from typing import Any, Dict, List
 
@@ -24,6 +25,17 @@ def do(kind: Kind, args: List[str], config: Dict[str, Any]) -> (int, str, str):
 def do_up(config_set: Dict[str, Any]) -> (int, str, str):
     status = Status(config_set["service"])
     typer.echo(status.render(tools.width()))
+
+    if config_set["destroy"]:
+        code, stdout, stderr = do(
+            Kind.show,
+            ["-json"],
+            {"path": config_set["plan"]["kwargs"]["path"]},
+        )
+
+        if not json.loads(stdout).get("values"):
+            typer.echo(status.phase_next().skip().render(tools.width()))
+            return code, "", stderr
 
     code, stdout, stderr = do(
         Kind.plan,

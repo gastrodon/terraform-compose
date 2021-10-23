@@ -7,7 +7,8 @@ PHASES: list[str] = [
 
 
 DOTS_DOING: str = "..."
-DOTS_OKAY: str = "  ✓"
+DOTS_DONE: str = "done"
+DOTS_SKIP: str = "skip"
 
 
 class Status:
@@ -16,6 +17,7 @@ class Status:
         self.phases: list[str] = phases
 
         self.done: bool = False
+        self.skiped: bool = False
         self.phase_index: int = 0
 
     @property
@@ -30,13 +32,23 @@ class Status:
         self.done = True
         return self
 
+    def skip(self) -> Status:
+        self.skiped = True
+        return self
+
     @property
     def phase(self) -> str:
         return self.phases[self.phase_index]
 
     @property
     def dot(self) -> str:
-        return DOTS_DOING if not self.done else DOTS_OKAY
+        if self.skiped:
+            return DOTS_SKIP
+
+        if self.done:
+            return DOTS_DONE
+
+        return DOTS_DOING
 
     def render(self, lines: int) -> str:
         left: str = f"{self.phase} {self.name}"

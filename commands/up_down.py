@@ -32,7 +32,7 @@ def gather_plan(
 ) -> Dict[str, Any]:
     return {
         "kind": Kind.plan,
-        "args": ["--destroy"] if destroy else [],
+        "args": ["-json", "-destroy"] if destroy else ["-json"],
         "kwargs": {
             **config.read(PLAN, service, compose),
             "out": "terraform-compose-tfplan",
@@ -43,7 +43,7 @@ def gather_plan(
 def gather_apply(service: str, compose: Dict[str, Any]) -> Dict[str, Any]:
     return {
         "kind": Kind.apply,
-        "args": ["terraform-compose-tfplan"],
+        "args": ["-json", "terraform-compose-tfplan"],
         "kwargs": {
             **config.read(APPLY, service, compose),
         },
@@ -62,6 +62,7 @@ def do_plan_apply(
         [
             {
                 "service": service,
+                "destroy": destroy,
                 "plan": gather_plan(service, compose, destroy=destroy),
                 "apply": gather_apply(service, compose),
             }
