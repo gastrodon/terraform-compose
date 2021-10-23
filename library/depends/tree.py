@@ -1,5 +1,6 @@
 from typing import Any, Callable, Dict, List
 
+from library.depends import tools
 from library.types.exceptions import CircularDependsOn
 
 
@@ -14,6 +15,54 @@ def tree_depth(tree: Dict[str, Any]) -> int:
     return max(
         [tree_depth(depends) + 1 for depends in tree["depends-on"] if depends] or [0]
     )
+
+
+def invert_tree(tree, parents=[]):
+    if not tree:
+        return tree
+
+    if not tree["depends-on"]:
+        return {
+            "name": tree["name"],
+            "level": tree["level"],
+            "depends-on": parents,
+        }
+
+    return tools.merge(
+        [
+            invert_tree(
+                sub,
+                parents=[
+                    {
+                        "name": tree["name"],
+                        "level": tree["level"],
+                        "depends-on": parents,
+                    }
+                ],
+            )
+            for sub in tree["depends-on"]
+        ]
+    )
+
+
+def root_dependency_tree(
+    services: Dict[str, Any],
+    skip: Callable[[Dict[str, Any]], bool] = lambda it: False,
+    inverse: bool = False,
+) -> Dict[str, Any]:
+    """
+    Generate a dependency tree for the entire compose file
+
+    The pretend resource at the root doesn't have level information
+    """
+
+    depends = [dependency_tree(it, services, skip=skip) for it in services.keys()]
+    do = invert_tree if inverse else lambda it: it
+
+    return {
+        "name": "",
+        "depends-on": [*filter(bool, map(do, depends))],
+    }
 
 
 def dependency_tree(
@@ -43,12 +92,11 @@ def dependency_tree(
     if skip(services[service]):
         return {}
 
-    parents = [*parents, service]
     dependencies = services[service].get("depends-on", [])
     no_level = {
         "name": service,
         "depends-on": [
-            dependency_tree(it, services, parents)
+            dependency_tree(it, services, parents=[*parents, service], skip=skip)
             for it in dependencies
             if not skip(services[it])
         ],
@@ -69,6 +117,33 @@ def flat_tree(tree):
         for flattened in [flat_tree(it) for it in tree["depends-on"]]
         for item in flattened
     ]
+
+
+def flat_trees(trees):
+    """
+    Given a collection of trees, flatten them all
+    """
+    if isinstance(trees, list):
+        return [*map(flat_trees, trees)]
+
+    return [flat_tree(trees)]
+
+
+def pluck(service, tree):
+    """
+    Given a dependency tree, pluck a service out of it
+    """
+    if tree["name"] == service:
+        return tree
+
+    return tools.merge(
+        tools.flatten(
+            filter(
+                bool,
+                (pluck(service, it) for it in tree["depends-on"]),
+            )
+        )
+    )
 
 
 # TODO belongs in a pretty printing part of the code
