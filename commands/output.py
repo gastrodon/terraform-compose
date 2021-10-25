@@ -31,7 +31,7 @@ def handle_output(
     configs: List[str] = [
         {
             "name": service,
-            "args": [],
+            "args": ["-json"],
             "kwargs": config.read(OUTPUT, service, compose),
         }
         for service in services or compose["services"].keys()

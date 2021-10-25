@@ -35,7 +35,7 @@ def handle_refresh(
     configs = [
         {
             "name": service,
-            "args": [],
+            "args": ["-json"],
             "kwargs": config.read(REFRESH, service, compose),
         }
         for service in services
