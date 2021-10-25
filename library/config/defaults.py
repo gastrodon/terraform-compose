@@ -35,7 +35,7 @@ PLAN: Dict[str, Item] = {
 
 INIT: Dict[str, Item] = {
     **shared,
-    "backend-config": Item([], False, List[str]),
+    "backend-configs": Item([], False, List[str]),
     "backend": Item(True, False, bool),
     "force-copy": Item(False, False, bool),
     "get": Item(True, False, bool),
