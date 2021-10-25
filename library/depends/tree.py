@@ -57,7 +57,7 @@ def root_dependency_tree(
     """
 
     depends = [dependency_tree(it, services, skip=skip) for it in services.keys()]
-    do = invert_tree if inverse else lambda it: it
+    do = invert_tree if inverse else bool
 
     return {
         "name": "",

@@ -16,7 +16,17 @@ def init_wrapped(config: Dict[str, Any]):
     status: Status = Status(config["name"], phases=["initing"])
     typer.echo(status.render(tools.width()))
 
-    terraform.do(Kind.init, config["args"], config["kwargs"])
+    code, stdout, stderr = terraform.do(Kind.init, config["args"], config["kwargs"])
+
+    if code:
+        raise Exception(
+            "\n\n".join(
+                filter(
+                    bool,
+                    [f"terraform exited with code {code}", stdout, stderr],
+                )
+            )
+        )
 
     typer.echo(status.finish().render(tools.width()))
 

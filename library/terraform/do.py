@@ -47,7 +47,7 @@ def do_up(config_set: Dict[str, Any]) -> (int, str, str):
         raise Exception(
             "\n\n".join(
                 filter(
-                    lambda it: it,
+                    bool,
                     [f"terraform exited with code {code}", stdout, stderr],
                 )
             )
