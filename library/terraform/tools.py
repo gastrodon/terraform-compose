@@ -8,7 +8,12 @@ PATH_KEYS: List[str] = [
     "state",
 ]
 
-SKIP_KEYS: List[str] = ["plan", "path", "var-files", "vars"]
+SKIP_KEYS: List[str] = ["backend-configs", "plan", "path", "var-files", "vars"]
+
+FILE_COLLECTION_KEYS: Dict[str, str] = {
+    "backend-configs": "backend-config",
+    "var-files": "var-file",
+}
 
 
 def sanitize_config(config: Dict[str, Any]) -> Dict[str, Any]:
@@ -28,9 +33,13 @@ def sanitize_config(config: Dict[str, Any]) -> Dict[str, Any]:
     }
 
 
-def sanitize_var_files(root: str, files: List[str]) -> List[List[str]]:
+def sanitize_file_collections(config: Dict[str, Any]) -> List[List[str]]:
+    root: str = config["path"]
+
     return [
-        ["-var-file", path.join(root, it) if not path.isabs(it) else it] for it in files
+        [f"-{value}", path.join(root, it) if not path.isabs(it) else it]
+        for key, value in FILE_COLLECTION_KEYS.items()
+        for it in config.get(key, [])
     ]
 
 
@@ -45,7 +54,7 @@ def argument_pairs(config: Dict[str, Any]) -> List[List[str]]:
             for key, value in sanitize_config(config).items()
             if value
         ]
-        + sanitize_var_files(config["path"], config.get("var-files", []))
+        + sanitize_file_collections(config)
         + sanitize_vars(config.get("vars", dict()))
     )
 
