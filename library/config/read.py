@@ -15,7 +15,7 @@ def read(
     schema: Dict[str, Item], service: str, compose: Dict[str, any]
 ) -> Dict[str, Any]:
     values = {
-        key: compose["services"][service].get(  # TODO validate compose structure
+        key: compose["services"][service].get(
             key,
             schema[key].default,
         )
