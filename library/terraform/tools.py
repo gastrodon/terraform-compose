@@ -1,5 +1,4 @@
 import os
-from os import path
 from typing import Any, Dict, List
 
 PATH_KEYS: List[str] = [
@@ -17,27 +16,12 @@ FILE_COLLECTION_KEYS: Dict[str, str] = {
 
 
 def sanitize_config(config: Dict[str, Any]) -> Dict[str, Any]:
-    paths_relative = {
-        key: path.join(config["path"], config[key])
-        if not path.isabs(config[key])
-        else config[key]
-        for key in PATH_KEYS
-        if key in config.keys()
-        if config[key]
-    }
-
-    return {
-        key: value
-        for key, value in {**config, **paths_relative}.items()
-        if key not in SKIP_KEYS
-    }
+    return {key: value for key, value in {**config}.items() if key not in SKIP_KEYS}
 
 
 def sanitize_file_collections(config: Dict[str, Any]) -> List[List[str]]:
-    root: str = config["path"]
-
     return [
-        [f"-{value}", path.join(root, it) if not path.isabs(it) else it]
+        [f"-{value}={it}"]
         for key, value in FILE_COLLECTION_KEYS.items()
         for it in config.get(key, [])
     ]
