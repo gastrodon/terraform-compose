@@ -62,4 +62,15 @@ def do_up(config_set: Dict[str, Any]) -> (int, str, str):
     )
 
     typer.echo(status.finish().render(tools.width()))
+
+    if code:
+        raise Exception(
+            "\n\n".join(
+                filter(
+                    bool,
+                    [f"terraform exited with code {code}", stdout, stderr],
+                )
+            )
+        )
+
     return code, stdout, stderr
