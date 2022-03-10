@@ -21,6 +21,8 @@ class Config(BaseModel):
     var: Dict[str, Any] = {}
     var_file: List[str] = Field([], alias="var-file")
 
+    migrate_state: bool = Field(False, alias="no-backend")
+    reconfigure: bool = False
     no_backend: bool = Field(False, alias="no-backend")
     no_get_modules: bool = Field(False, alias="no-get-modules")
     no_lock: bool = Field(False, alias="no-lock")
