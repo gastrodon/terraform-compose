@@ -6,7 +6,7 @@ from typing import Callable, Dict, List
 import yaml
 
 from library.types.config import Config
-from library.types.error import ValidError
+from library.types.error import ValidationError
 
 
 def with_middleware(args: List, config: str, middleware: List) -> Dict:
@@ -23,7 +23,7 @@ def with_middleware(args: List, config: str, middleware: List) -> Dict:
     for it in (it.callable for it in middleware):
         try:
             config_writable = it(args, config_writable)
-        except ValidError as err:
+        except ValidationError as err:
             print("{middleware[index].__name__} ( #{index} ) failed!")
             print(err.message)
 
