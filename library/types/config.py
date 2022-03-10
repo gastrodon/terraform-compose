@@ -23,8 +23,8 @@ class Config(BaseModel):
 
     migrate_state: bool = Field(False, alias="no-backend")
     reconfigure: bool = False
-    no_backend: bool = Field(False, alias="no-backend")
-    no_get_modules: bool = Field(False, alias="no-get-modules")
-    no_lock: bool = Field(False, alias="no-lock")
-    no_input: bool = Field(True, alias="no-input")
+    get_modules: bool = Field(True, alias="no-get-modules")
+    lock: bool = Field(True, alias="no-lock")
+    input: bool = Field(False, alias="no-input")
+    backend: bool = Field(True, alias="no-backend")
     backend_config: List[str] = Field([], alias="backend-config")
