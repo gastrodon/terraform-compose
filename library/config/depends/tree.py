@@ -1,7 +1,7 @@
 from typing import Any, Callable, Dict, List
 
 from library.config.depends import tools
-from library.types.error import CircularDependsOn
+from library.types.error import DependsError
 
 
 def tree_depth(tree: Dict[str, Any]) -> int:
@@ -87,7 +87,7 @@ def dependency_tree(
     }
     """
     if service in (parents or []):
-        CircularDependsOn(service, parents or []).exit()
+        DependsError(service, parents or []).exit()
 
     if skip(services[service]):
         return {}
