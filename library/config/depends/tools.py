@@ -53,7 +53,7 @@ def flatten(collections):
     ]
 
 
-def flatten_map(collection, prefix: str = "", keep_sub: bool = False):
+def flatten_map(collection, prefix: str = ""):
     """
     Given a Dict[str, Any], flatten it into a Dict[str, T]
     where T is anything that isn't a dict,
@@ -67,10 +67,8 @@ def flatten_map(collection, prefix: str = "", keep_sub: bool = False):
 
     for key, value in namespaced.items():
         if isinstance(value, dict):
-            flat = {**flat, **flatten_map(value, prefix=key, keep_sub=keep_sub)}
-
-            if not keep_sub:
-                continue
+            flat = {**flat, **flatten_map(value, prefix=key)}
+            continue
 
         flat[key] = value
 

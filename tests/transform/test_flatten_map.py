@@ -7,37 +7,31 @@ case_flatten_map = [
         "have": {"hello": "world"},
         "want": {"hello": "world"},
         "prefix": "",
-        "keep_sub": False,
     },
     {
         "have": {"hello": "world"},
         "want": {"hello": "world"},
         "prefix": "",
-        "keep_sub": True,
     },
     {
         "have": {"hello": {"small": "world"}},
         "want": {"hello.small": "world"},
         "prefix": "",
-        "keep_sub": False,
     },
     {
         "have": {"hello": "world"},
         "want": {"space.hello": "world"},
         "prefix": "space",
-        "keep_sub": False,
     },
     {
         "have": {"hello": {"small": "world"}},
-        "want": {"hello.small": "world", "hello": {"small": "world"}},
+        "want": {"hello.small": "world"},
         "prefix": "",
-        "keep_sub": True,
     },
     {
         "have": {"hello": {"small": "world"}},
-        "want": {"friendly.hello.small": "world", "friendly.hello": {"small": "world"}},
+        "want": {"friendly.hello.small": "world"},
         "prefix": "friendly",
-        "keep_sub": True,
     },
 ]
 
@@ -48,7 +42,6 @@ class TestFlattenMap(TestCase):
             flat = tools.flatten_map(
                 case["have"],
                 prefix=case["prefix"],
-                keep_sub=case["keep_sub"],
             )
 
             if flat != case["want"]:
