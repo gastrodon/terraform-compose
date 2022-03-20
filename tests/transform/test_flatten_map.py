@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from library.config.depends import tools
+from library.transform import flat
 
 case_flatten_map = [
     {
@@ -39,7 +39,7 @@ case_flatten_map = [
 class TestFlattenMap(TestCase):
     def test_flatten_map(self):
         for index, case in enumerate(case_flatten_map):
-            flat = tools.flatten_map(
+            flat = flat.flatten_map(
                 case["have"],
                 prefix=case["prefix"],
             )

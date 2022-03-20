@@ -1,6 +1,6 @@
 from typing import Any, Callable, Dict, List
 
-from library.config.depends import tools
+from library.transform import tools
 from library.types.error import DependsError
 
 
@@ -17,7 +17,7 @@ def tree_depth(tree: Dict[str, Any]) -> int:
     )
 
 
-def invert_tree(tree, parents=[]):
+def invert(tree, parents=[]):
     if not tree:
         return tree
 
@@ -30,7 +30,7 @@ def invert_tree(tree, parents=[]):
 
     return tools.merge(
         [
-            invert_tree(
+            invert(
                 sub,
                 parents=[
                     {
@@ -57,7 +57,7 @@ def root_dependency_tree(
     """
 
     depends = [dependency_tree(it, services, skip=skip) for it in services.keys()]
-    do = invert_tree if inverse else lambda it: it
+    do = invert if inverse else lambda it: it
 
     return {
         "name": "",
@@ -127,29 +127,3 @@ def flat_trees(trees):
         return [*map(flat_trees, trees)]
 
     return [flat_tree(trees)]
-
-
-def pluck(service, tree):
-    """
-    Given a dependency tree, pluck a service out of it
-    """
-    if tree["name"] == service:
-        return tree
-
-    return tools.merge(
-        tools.flatten(
-            filter(
-                bool,
-                (pluck(service, it) for it in tree["depends-on"]),
-            )
-        )
-    )
-
-
-# TODO belongs in a pretty printing part of the code
-def render_tree(tree: Dict[str, Any], level: int = 0) -> str:
-    depends: list[Any] = tree.get("depends-on", [])
-
-    return f"\n{'  '*level} | ".join(
-        [tree["name"], *(render_tree(it, level + 1) for it in depends)]
-    )

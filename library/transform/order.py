@@ -1,6 +1,6 @@
 from typing import Any, Dict, List
 
-from library.config.depends import tree
+from library.transform import tree
 
 
 def order_levels(trees: List[Dict[str, Any]]) -> List[List[str]]:
