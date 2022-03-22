@@ -24,4 +24,7 @@ class Parse:
         for handle in self._handle:
             transformed = handle(command, args, transformed)
 
+        if self._final_set:
+            return self._final(command, args, transformed)
+
         return transformed
