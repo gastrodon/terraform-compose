@@ -1,11 +1,10 @@
 from typing import Callable, Dict, List
 
-Final = Callable[Dict, Compose]
 Transform = Callable[[..., ..., Dict], Dict]
 
 
 class Parse:
-    _final: Final = None
+    _final: Transform = None
     _final_set: bool = False
     _handle: List[Transform] = []
 
