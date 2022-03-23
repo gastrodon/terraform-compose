@@ -5,8 +5,7 @@ import yaml
 import library.load.handle  # noqa
 from library.load.route import parse
 from library.model import Compose, compose
-
-COMPOSE_FILE = "terraform-compose.yml"
+from library.value import COMPOSE_FILE
 
 
 def load(args: ..., path: str = ".", file: str = COMPOSE_FILE) -> Compose:
