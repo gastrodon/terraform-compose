@@ -1,14 +1,18 @@
 from typing import Dict
 
+from library import transform
 from library.load.route import handle
 
 
 @handle
-def imports(command: ..., args: ..., compose: Dict):
-    if not compose.get("import", []):
-        return compose  # TODO
+def trace_imports(command: ..., args: ..., compose: Dict):
+    transform.trace_imports()
+    return compose
 
-    raise NotImplementedError("import isn't implemented")
+
+@handle
+def load_imports(command: ..., args: ..., compose: Dict):
+    return {**compose, "services": transform.collect_imports()}
 
 
 @handle
