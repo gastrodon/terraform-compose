@@ -3,6 +3,7 @@ from typing import Any, Dict
 
 import yaml
 
+from library.model import compose
 from library.value import COMPOSE_FILE
 
 lookup: Dict[str, Any] = {}
@@ -30,7 +31,17 @@ def gather(name: str = "", file: str = COMPOSE_FILE):
         gather(".".join((name, imported)) if name else imported, file)
 
 
+def set(composes: Dict[str, Dict]):
+    global lookup
+
+    lookup = {**composes}
+
+
 def get(name: str):
     global lookup
 
     return lookup[name]
+
+
+def get_compose(name: str):
+    return compose.from_dict(get(name))
