@@ -7,13 +7,13 @@ from library.transform import compose as transform_compose
 
 @handle
 def trace_imports(command: ..., args: ..., compose: Dict):
-    transform.trace_imports()
+    transform.trace()
     return compose
 
 
 @handle
 def load_imports(command: ..., args: ..., compose: Dict):
-    return {**compose, "services": transform.collect_imports()}
+    return {**compose, "services": transform.collect()}
 
 
 @handle

@@ -17,7 +17,7 @@ def test_trace():
         resolve.set(case)
 
         try:
-            collect.trace_imports()
+            collect.trace()
 
         except ValueError as err:
             assert False, err
@@ -28,7 +28,7 @@ def test_trace_no_compose():
         resolve.set(case)
 
         try:
-            collect.trace_imports()
+            collect.trace()
             assert False, case
 
         except KeyError as err:

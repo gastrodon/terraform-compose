@@ -11,7 +11,7 @@ def namespace(space: str, name: str):
     return ".".join((space, name))
 
 
-def trace_imports(name: str = "", parents: Set = set()):
+def trace(name: str = "", parents: Set = set()):
     if not (imports := resolve.get(name).get("import", [])):
         return
 
@@ -22,17 +22,17 @@ def trace_imports(name: str = "", parents: Set = set()):
         if import_name in parents:
             raise ValueError(parents.union(import_name))  # TODO better type
 
-        trace_imports(import_name, parents.union(name))
+        trace(import_name, parents.union(name))
 
 
-def collect_import(name: str = "") -> Dict:
+def collect_single(name: str = "") -> Dict:
     compose = resolve.get(name)
     imports = [
         namespace(name, import_name) for import_name in compose.get("import", [])
     ]
 
     return {
-        **collect_imports(imports),
+        **collect(imports),
         **{
             namespace(name, key): service
             for key, service in compose.get("services", {}).items()
@@ -40,9 +40,9 @@ def collect_import(name: str = "") -> Dict:
     }
 
 
-def collect_imports(names: List[str] = [""]) -> Dict:
+def collect(names: List[str] = [""]) -> Dict:
     return {
         name: service
         for import_name in names
-        for name, service in collect_import(import_name).items()
+        for name, service in collect_single(import_name).items()
     }
