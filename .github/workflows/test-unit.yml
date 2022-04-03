@@ -44,5 +44,5 @@ jobs:
         run: pip install $(cat ./terraform-compose/requirements.*)
       - name: run tests
         env:
-          PYTHON_PATH: .
+          PYTHON_PATH: ./terraform-compose
         run: python -m pytest -vv --cov
