@@ -2,6 +2,7 @@ from typing import Dict
 
 from library import transform
 from library.load.route import handle
+from library.transform import compose as transform_compose
 
 
 @handle
@@ -18,6 +19,14 @@ def load_imports(command: ..., args: ..., compose: Dict):
 @handle
 def include_global(command: ..., args: ..., compose: Dict):
     return compose  # TODO
+
+    return {
+        **compose,
+        **{
+            service: transform_compose.merge(descriptor, compose["globals"])
+            for descriptor in compose["services"]
+        },
+    }
 
 
 @handle
