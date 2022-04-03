@@ -12,7 +12,7 @@ cases = [
 cases_no_compose = [{"": {"import": ["hello"]}}]
 
 
-def test_get_path():
+def test_trace():
     for case in cases:
         resolve.set(case)
 
@@ -23,7 +23,7 @@ def test_get_path():
             assert False, err
 
 
-def test_get_path_no_compose():
+def test_trace_no_compose():
     for case in cases_no_compose:
         resolve.set(case)
 
