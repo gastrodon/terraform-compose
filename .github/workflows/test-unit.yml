@@ -42,10 +42,9 @@ jobs:
           path: terraform-compose
       - name: create environment
         run: python -m venv ./venv
-      - name: source environment
-        run: . ./venv/bin/activate
       - name: install requirements
         run: >-
+              . ./venv/bin/activate && \
               pip install \
                 -r terraform-compose/requirements.txt \
                 -r terraform-compose/requirements.test.txt
@@ -71,11 +70,10 @@ jobs:
         with:
           name: venv
           path: venv
-      - name: source environment
-        run: . ./venv/bin/activate
       - name: run unit tests
         env:
             PYTHONPATH: ./terraform-compose
         run: >-
+              . ./venv/bin/activate && \
               pytest terraform-compose \
                 --cov -p no:cacheprovider -vv
