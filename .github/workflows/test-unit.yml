@@ -39,6 +39,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: terraform-compose
+          path: terrafor-compose
       - name: create environment
         run: python -m venv ./venv
       - name: source environment
@@ -64,10 +65,12 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: terraform-compose
+          path: terraform-compose
       - name: download venv
         uses: actions/download-artifact@v3
         with:
           name: venv
+          path: venv
       - name: source environment
         run: . ./venv/bin/activate
       - name: run unit tests
