@@ -45,4 +45,4 @@ jobs:
       - name: run tests
         env:
           PYTHON_PATH: ./terraform-compose
-        run: python -m pytest -vv --cov
+        run: python -m pytest -vv --cov terraform-compose
