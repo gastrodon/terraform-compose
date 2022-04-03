@@ -1,0 +1,79 @@
+name: test-unit
+
+on:
+  - push
+  - pull_request
+
+jobs:
+  reflect:
+    runs-on: ubuntu-latest
+    steps:
+      - name: current ref
+        run: echo ${{ github.ref }}
+      - name: HEAD ref
+        run: echo ${{ github.head_ref }}
+      - name: python version
+        run: python --version
+      - name: pip version
+        run: pip --version
+
+  collect-code:
+    runs-on: ubuntu-latest
+    steps:
+      - name: gather code
+        uses: actions/checkout@v2
+        with:
+          path: ./terraform-compose
+      - name: artifact code
+        uses: actions/upload-artifact@v3
+        with:
+          name: terraform-compose
+          path: ./terraform-compose
+
+
+    build-environment:
+      runs-on: ubuntu-latest
+      needs:
+        - collect-code
+      steps:
+        - name: download terraform-compose
+          uses: actions/download-artifact@v3
+          with:
+            name: terraform-compose
+        - name: create environment
+          run: python -m venv ./venv
+        - name: source environment
+          run: . ./venv/bin/activate
+        - name: install requirements
+          run: >-
+                pip install \
+                  -r terraform-compose/requirements.txt \
+                  -r terraform-compose/requirements.test.txt
+        - name: artifact environment
+          uses: actions/upload-artifact@v3
+          with:
+            name: venv
+            path: ./venv
+
+    run-tests:
+      runs-on: ubuntu-latest
+      needs:
+        - collect-code
+        - build-environment
+      steps:
+        - name: download terraform-compose
+          uses: actions/download-artifact@v3
+          with:
+            name: terraform-compose
+        - name: download venv
+          uses: actions/download-artifact@v3
+          with:
+            name: venv
+        - name: source environment
+          run: . ./venv/bin/activate
+        - name: run unit tests
+            env:
+                PYTHONPATH: ./terraform-compose
+            run: >-
+                  pytest terraform-compose \
+                    --cov -p no:cacheprovider -vv
