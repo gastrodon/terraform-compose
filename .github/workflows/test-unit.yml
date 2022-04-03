@@ -45,7 +45,7 @@ jobs:
       - name: install requirements
         run: >-
               . ./venv/bin/activate && \
-              pip install \
+              python -m pip install \
                 -r terraform-compose/requirements.txt \
                 -r terraform-compose/requirements.test.txt
       - name: artifact environment
@@ -75,5 +75,5 @@ jobs:
             PYTHONPATH: ./terraform-compose
         run: >-
               . ./venv/bin/activate && \
-              pytest terraform-compose \
+              python -m pytest terraform-compose \
                 --cov -p no:cacheprovider -vv
