@@ -25,12 +25,14 @@ jobs:
     strategy:
       matrix:
         python:
-          - latest
-          - 3.9
-          - 3.10
-          - alpine
-          - 3.9-alpine
-          - 3.10-alpine
+          - 'latest'
+          - 'alpine'
+          - '3.9'
+          - '3.9-alpine'
+          - '3.10'
+          - '3.10-alpine'
+          - '3.11-rc'
+          - '3.11-rc-alpine'
 
     container:
       image: python:${{ matrix.python }}
