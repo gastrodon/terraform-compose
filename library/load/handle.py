@@ -13,7 +13,7 @@ def trace_imports(command: ..., args: ..., compose: Dict):
 
 @handle
 def load_imports(command: ..., args: ..., compose: Dict):
-    return {**compose, "services": transform.collect()}
+    return {**compose, "service": transform.collect()}
 
 
 @handle
@@ -24,7 +24,7 @@ def include_global(command: ..., args: ..., compose: Dict):
         **compose,
         **{
             service: transform_compose.merge(descriptor, compose["globals"])
-            for descriptor in compose["services"]
+            for descriptor in compose["service"]
         },
     }
 

@@ -9,8 +9,8 @@ from library.resolve import resolve
 cases_uncomplex = [
     [
         [],
-        {"": {"services": {"hello": {"path": "./world"}}}},
-        Compose(services={"hello": Config(path="./world")}),
+        {"": {"service": {"hello": {"path": "./world"}}}},
+        Compose(service={"hello": Config(path="./world")}),
     ],
 ]
 
@@ -19,18 +19,18 @@ cases_import = [
         [],
         {
             "": {"import": ["remote"]},
-            "remote": {"services": {"hello": {"path": "./world"}}},
+            "remote": {"service": {"hello": {"path": "./world"}}},
         },
-        Compose(services={"remote.hello": Config(path="./world")}),
+        Compose(service={"remote.hello": Config(path="./world")}),
     ],
     [
         [],
         {
             "": {"import": ["remote"]},
             "remote": {"import": ["tiny"]},
-            "remote.tiny": {"services": {"hello": {"path": "./world"}}},
+            "remote.tiny": {"service": {"hello": {"path": "./world"}}},
         },
-        Compose(services={"remote.tiny.hello": Config(path="./world")}),
+        Compose(service={"remote.tiny.hello": Config(path="./world")}),
     ],
 ]
 
@@ -40,14 +40,14 @@ cases_global = [
         {
             "": {
                 "global": {"var": {"hello": "world"}},
-                "services": {
+                "service": {
                     "earth": {"path": "./planet/earth"},
                     "venus": {"path": "./planet/venus"},
                 },
             }
         },
         Compose(
-            services={
+            service={
                 "earth": Config(path="./planet/earth", var={"hello": "world"}),
                 "venus": Config(path="./planet/earth", var={"hello": "world"}),
             }

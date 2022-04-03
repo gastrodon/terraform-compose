@@ -35,7 +35,7 @@ def collect_single(name: str = "") -> Dict:
         **collect(imports),
         **{
             namespace(name, key): service
-            for key, service in compose.get("services", {}).items()
+            for key, service in compose.get("service", {}).items()
         },
     }
 

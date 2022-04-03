@@ -9,7 +9,7 @@ cases = [
     [
         {
             "": {"import": ["hello"]},
-            "hello": {"services": {"world": {"path": "./planet/earth"}}},
+            "hello": {"service": {"world": {"path": "./planet/earth"}}},
         },
         {
             "hello.world": {"path": "./planet/earth"},
@@ -18,8 +18,8 @@ cases = [
 ]
 
 
-@pytest.mark.parametrize("resolution,services", cases)
-def test_trace(resolution: Dict, services: Dict):
+@pytest.mark.parametrize("resolution,service", cases)
+def test_trace(resolution: Dict, service: Dict):
     resolve.set(resolution)
 
-    assert collect.collect() == services
+    assert collect.collect() == service
