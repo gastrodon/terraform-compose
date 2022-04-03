@@ -72,8 +72,8 @@ jobs:
         - name: source environment
           run: . ./venv/bin/activate
         - name: run unit tests
-            env:
-                PYTHONPATH: ./terraform-compose
-            run: >-
-                  pytest terraform-compose \
-                    --cov -p no:cacheprovider -vv
+          env:
+              PYTHONPATH: ./terraform-compose
+          run: >-
+                pytest terraform-compose \
+                  --cov -p no:cacheprovider -vv
