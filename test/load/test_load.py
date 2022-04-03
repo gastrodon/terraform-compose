@@ -1,35 +1,43 @@
+from typing import Dict, List
+
+import pytest
+
 from library import load
 from library.model import Compose, Config
 from library.resolve import resolve
 
 cases_uncomplex = [
-    {
-        "resolve": {"": {"services": {"hello": {"path": "./world"}}}},
-        "want": Compose(services={"hello": Config(path="./world")}),
-    }
+    [
+        [],
+        {"": {"services": {"hello": {"path": "./world"}}}},
+        Compose(services={"hello": Config(path="./world")}),
+    ],
 ]
 
 cases_import = [
-    {
-        "resolve": {
+    [
+        [],
+        {
             "": {"import": ["remote"]},
             "remote": {"services": {"hello": {"path": "./world"}}},
         },
-        "want": Compose(services={"remote.hello": Config(path="./world")}),
-    },
-    {
-        "resolve": {
+        Compose(services={"remote.hello": Config(path="./world")}),
+    ],
+    [
+        [],
+        {
             "": {"import": ["remote"]},
             "remote": {"import": ["tiny"]},
             "remote.tiny": {"services": {"hello": {"path": "./world"}}},
         },
-        "want": Compose(services={"remote.tiny.hello": Config(path="./world")}),
-    },
+        Compose(services={"remote.tiny.hello": Config(path="./world")}),
+    ],
 ]
 
 cases_global = [
-    {
-        "resolve": {
+    [
+        [],
+        {
             "": {
                 "global": {"var": {"hello": "world"}},
                 "services": {
@@ -38,13 +46,13 @@ cases_global = [
                 },
             }
         },
-        "want": Compose(
+        Compose(
             services={
                 "earth": Config(path="./planet/earth", var={"hello": "world"}),
                 "venus": Config(path="./planet/earth", var={"hello": "world"}),
             }
         ),
-    }
+    ]
 ]
 
 cases = [
@@ -53,8 +61,8 @@ cases = [
 ]
 
 
-def test_load():
-    for index, case in enumerate(cases):
-        resolve.set(case["resolve"])
+@pytest.mark.parametrize("args,resolution,want", cases)
+def test_load(args: List, resolution: Dict[str, Dict], want: Compose):
+    resolve.set(resolution)
 
-        assert load.load(case.get("args", []), "") == case["want"], f"cases[{index}]"
+    assert load.load(args, "") == want

@@ -1,3 +1,7 @@
+from typing import Dict
+
+import pytest
+
 from library.resolve import resolve
 from library.transform.compose import collect
 
@@ -12,24 +16,24 @@ cases = [
 cases_no_compose = [{"": {"import": ["hello"]}}]
 
 
-def test_trace():
-    for case in cases:
-        resolve.set(case)
+@pytest.mark.parametrize("resolution", cases)
+def test_trace(resolution: Dict):
+    resolve.set(resolution)
 
-        try:
-            collect.trace()
+    try:
+        collect.trace()
 
-        except ValueError as err:
-            assert False, err
+    except ValueError as err:
+        assert False, err
 
 
-def test_trace_no_compose():
-    for case in cases_no_compose:
-        resolve.set(case)
+@pytest.mark.parametrize("resolution", cases_no_compose)
+def test_trace_no_compose(resolution: Dict):
+    resolve.set(resolution)
 
-        try:
-            collect.trace()
-            assert False, case
+    try:
+        collect.trace()
+        assert False, resolution
 
-        except KeyError as err:
-            continue
+    except KeyError as err:
+        return
