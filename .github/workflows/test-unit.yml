@@ -40,16 +40,9 @@ jobs:
         with:
           name: terraform-compose
           path: terraform-compose
-      - name: create environment
-        run: python -m venv ./venv
-      - name: install requirements
-        run: >-
-              pip install \
-                -r terraform-compose/requirements.txt \
-                -r terraform-compose/requirements.test.txt
-      - name: run unit tests
+      - name: install depends
+        run: pip install $(cat ./terraform-compose/requirements.*)
+      - name: run tests
         env:
-            PYTHONPATH: ./terraform-compose
-        run: >-
-              python -m pytest terraform-compose \
-                --cov -p no:cacheprovider -vv
+          PYTHON_PATH: .
+        run: python -m pytest -vv --cov
