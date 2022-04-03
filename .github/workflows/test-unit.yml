@@ -30,7 +30,7 @@ jobs:
           name: terraform-compose
           path: ./terraform-compose
 
-  build-environment:
+  run-tests:
     runs-on: ubuntu-latest
     needs:
       - collect-code
@@ -44,36 +44,12 @@ jobs:
         run: python -m venv ./venv
       - name: install requirements
         run: >-
-              . ./venv/bin/activate && \
-              python -m pip install \
+              pip install \
                 -r terraform-compose/requirements.txt \
                 -r terraform-compose/requirements.test.txt
-      - name: artifact environment
-        uses: actions/upload-artifact@v3
-        with:
-          name: venv
-          path: ./venv
-
-  run-tests:
-    runs-on: ubuntu-latest
-    needs:
-      - collect-code
-      - build-environment
-    steps:
-      - name: download terraform-compose
-        uses: actions/download-artifact@v3
-        with:
-          name: terraform-compose
-          path: terraform-compose
-      - name: download venv
-        uses: actions/download-artifact@v3
-        with:
-          name: venv
-          path: venv
       - name: run unit tests
         env:
             PYTHONPATH: ./terraform-compose
         run: >-
-              . ./venv/bin/activate && \
               python -m pytest terraform-compose \
                 --cov -p no:cacheprovider -vv
