@@ -5,20 +5,9 @@ on:
   - pull_request
 
 jobs:
-  reflect:
-    runs-on: ubuntu-latest
-    steps:
-      - name: current ref
-        run: echo ${{ github.ref }}
-      - name: HEAD ref
-        run: echo ${{ github.head_ref }}
-      - name: python version
-        run: python --version
-      - name: pip version
-        run: pip --version
-
   collect-code:
     runs-on: ubuntu-latest
+
     steps:
       - name: gather code
         uses: actions/checkout@v2
@@ -32,9 +21,26 @@ jobs:
 
   run-tests:
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python:
+          - latest
+          - 3.9
+          - 3.10
+          - alpine
+          - 3.9-alpine
+          - 3.10-alpine
+
+    container:
+      image: python:${{ matrix.python }}
+
     needs:
       - collect-code
+
     steps:
+      - name: reflect
+        run: python --verison && pip --version
       - name: download terraform-compose
         uses: actions/download-artifact@v3
         with:
