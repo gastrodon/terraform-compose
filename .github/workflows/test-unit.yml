@@ -40,7 +40,7 @@ jobs:
 
     steps:
       - name: reflect
-        run: python --verison && pip --version
+        run: python --version && pip --version
       - name: download terraform-compose
         uses: actions/download-artifact@v3
         with:
