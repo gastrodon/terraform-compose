@@ -1,0 +1,56 @@
+name: test-unit
+
+on:
+  - push
+  - pull_request
+
+jobs:
+  collect-code:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: gather code
+        uses: actions/checkout@v2
+        with:
+          path: ./terraform-compose
+      - name: artifact code
+        uses: actions/upload-artifact@v3
+        with:
+          name: terraform-compose
+          path: ./terraform-compose
+
+  run-tests:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python:
+          - 'latest'
+          - 'alpine'
+          - '3.9'
+          - '3.9-alpine'
+          - '3.10'
+          - '3.10-alpine'
+          - '3.11-rc'
+          - '3.11-rc-alpine'
+
+    container:
+      image: python:${{ matrix.python }}
+
+    needs:
+      - collect-code
+
+    steps:
+      - name: reflect
+        run: python --version && pip --version
+      - name: download terraform-compose
+        uses: actions/download-artifact@v3
+        with:
+          name: terraform-compose
+          path: terraform-compose
+      - name: install depends
+        run: pip install $(cat ./terraform-compose/requirements.*)
+      - name: run tests
+        env:
+          PYTHONPATH: ./terraform-compose
+        run: python -m pytest -vv --cov terraform-composeg
