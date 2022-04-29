@@ -1,11 +1,9 @@
-from typing import Any, List, Tuple, TypeVar, Union
+from typing import Any, List
 
-FlatPath = List[Union[str, int]]
-FlatItem = TypeVar("FlatItem", int, float, str, None)
-FlatDict = List[Tuple[FlatPath, FlatItem]]
+from library.model.flat import FlatEntries
 
 
-def flatten(source: Any, path=[]) -> List[Tuple[FlatPath, FlatItem]]:
+def flatten(source: Any, path=[]) -> List[FlatEntries]:
     if isinstance(source, dict):
         return [
             (flat_key, flat_value)
