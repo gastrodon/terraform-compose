@@ -8,10 +8,15 @@ noop = lambda it: it
 
 
 def matches(key, value, key_re, value_re, separator):
-    return key_re.match(separator.join(key)) or value_re.match(value)
+    key_string = separator.join(map(str, key))
+
+    if not isinstance(value, str) and value_re is never:
+        return key_re.match(key_string)
+
+    return key_re.match(key_string) or value_re.match(value)
 
 
-def find(source: Dict, key=None, value=None, separator=".") -> List[str]:
+def find(source: Dict, key=None, value=None, separator=".", lists=True) -> List[str]:
     """
     Given a source dict and regex key / value matchers,
     return paths that match our criteria
@@ -26,6 +31,6 @@ def find(source: Dict, key=None, value=None, separator=".") -> List[str]:
 
     return [
         path
-        for path, value in flatten(source)
+        for path, value in flatten(source, lists=lists)
         if matches(path, value, key_re, value_re, separator)
     ]

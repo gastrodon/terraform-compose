@@ -25,4 +25,4 @@ def insert(source: Dict, path: List, value: Any) -> Dict:
     if not path:
         return source
 
-    return merge.merge(source, widen(path, value))
+    return merge.merge(source, widen(path, value), lists=False)
