@@ -64,5 +64,5 @@ cases = [
 
 
 @pytest.mark.parametrize("source,kwargs,want", cases)
-def test_find_key(source: Dict, kwargs: Dict, want: List[str]):
+def test_find(source: Dict, kwargs: Dict, want: List[str]):
     assert compose.find(source, **kwargs) == want
