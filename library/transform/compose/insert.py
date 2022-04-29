@@ -11,6 +11,9 @@ def widen(path: List, value: Any) -> Any:
     if not path:
         return value
 
+    if isinstance(path[0], int):
+        return [widen(path[1:], value)]
+
     return {path[0]: widen(path[1:], value)}
 
 
