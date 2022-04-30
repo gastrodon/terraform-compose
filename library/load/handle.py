@@ -2,7 +2,6 @@ from typing import Dict
 
 from library import transform
 from library.load.route import handle
-from library.transform import compose as transform_compose
 
 
 @handle
@@ -23,7 +22,7 @@ def include_global(command: ..., args: ..., compose: Dict):
     return {
         **compose,
         **{
-            service: transform_compose.merge(descriptor, compose["globals"])
+            service: transform.compose.merge(descriptor, compose["globals"])
             for descriptor in compose["service"]
         },
     }
@@ -32,6 +31,11 @@ def include_global(command: ..., args: ..., compose: Dict):
 @handle
 def include_cli(command: ..., args: ..., compose: Dict):
     return compose  # TODO
+
+
+@handle
+def absolutize_paths(command: ..., args: ..., compose: Dict):
+    return transform.path.absolutize(compose)
 
 
 @handle

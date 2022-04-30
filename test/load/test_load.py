@@ -10,7 +10,7 @@ cases_uncomplex = [
     [
         [],
         {"": {"service": {"hello": {"path": "./world"}}}},
-        Compose(service={"hello": Config(path="./world")}),
+        Compose(service={"hello": Config(path="/tf-compose/world")}),
     ],
 ]
 
@@ -21,7 +21,7 @@ cases_import = [
             "": {"import": ["remote"]},
             "remote": {"service": {"hello": {"path": "./world"}}},
         },
-        Compose(service={"remote.hello": Config(path="./world")}),
+        Compose(service={"remote.hello": Config(path="/tf-compose/remote/world")}),
     ],
     [
         [],
@@ -30,7 +30,9 @@ cases_import = [
             "remote": {"import": ["tiny"]},
             "remote.tiny": {"service": {"hello": {"path": "./world"}}},
         },
-        Compose(service={"remote.tiny.hello": Config(path="./world")}),
+        Compose(
+            service={"remote.tiny.hello": Config(path="/tf-compose/remote/tiny/world")}
+        ),
     ],
 ]
 
@@ -48,8 +50,12 @@ cases_global = [
         },
         Compose(
             service={
-                "earth": Config(path="./planet/earth", var={"hello": "world"}),
-                "venus": Config(path="./planet/earth", var={"hello": "world"}),
+                "earth": Config(
+                    path="/tf-compose/planet/earth", var={"hello": "world"}
+                ),
+                "venus": Config(
+                    path="/tf-compose/planet/earth", var={"hello": "world"}
+                ),
             }
         ),
     ]
@@ -62,7 +68,8 @@ cases = [
 
 
 @pytest.mark.parametrize("args,resolution,want", cases)
-def test_load(args: List, resolution: Dict[str, Dict], want: Compose):
+def test_load(args: List, resolution: Dict[str, Dict], want: Compose, mocker):
+    mocker.patch("os.getcwd", return_value="/tf-compose")
     resolve.set(resolution)
 
     assert load.load(args, "") == want
