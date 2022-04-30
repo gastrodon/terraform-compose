@@ -10,6 +10,9 @@ noop = lambda it: it
 def matches(key, value, key_re, value_re, separator):
     key_string = separator.join(map(str, key))
 
+    if isinstance(value, (list, tuple, set)):
+        return any(matches(key, it, key_re, value_re, separator) for it in value)
+
     if not isinstance(value, str) and value_re is never:
         return key_re.match(key_string)
 
