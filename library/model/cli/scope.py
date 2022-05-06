@@ -1,6 +1,6 @@
 from enum import Enum
 
-from model.command.kind import CommandKind
+from library.model.command.kind import CommandKind
 
 
 class ArgumentScope(Enum):
