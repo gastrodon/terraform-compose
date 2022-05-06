@@ -6,11 +6,14 @@ from library.model import Compose
 
 class Command(ABC):
     @staticmethod
-    def arguments() -> List[str]:
-        """
-        A collection of arguments that are relevent to this particular command
-        """
-        raise NotImplementedError()
+    def arguments_flag() -> List[str]:
+        """A collection of flags"""
+        return []
+
+    @staticmethod
+    def arguments_kv() -> List[str]:
+        """A collection of key: value arguments"""
+        return []
 
     @staticmethod
     def compile(compose: Compose) -> List[List[str]]:

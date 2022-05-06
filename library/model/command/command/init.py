@@ -2,10 +2,9 @@ from typing import List
 
 from library.model.command.base import Command
 
-ARGUMENTS: List[str] = [
+ARGUMENTS_FLAG: List[str] = [
     "backend_config",
     "backend",
-    "force_copy",
     "from_module",
     "get",
     "ignore_remote_version",
@@ -13,9 +12,13 @@ ARGUMENTS: List[str] = [
     "lock_timeout",
     "lock",
     "lockfile",
+    "plugin_dir",
+]
+
+ARGUMENTS_FLAG: List[str] = [
+    "force_copy",
     "migrate_state",
     "no_color",
-    "plugin_dir",
     "reconfigure",
     "upgrade",
 ]
@@ -23,5 +26,9 @@ ARGUMENTS: List[str] = [
 
 class Init(Command):
     @staticmethod
-    def arguments() -> List[str]:
-        return ARGUMENTS
+    def arguments_flag() -> List[str]:
+        return ARGUMENTS_FLAG
+
+    @staticmethod
+    def arguments_kv() -> List[str]:
+        return ARGUMENTS_KV

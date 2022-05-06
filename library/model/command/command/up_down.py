@@ -2,17 +2,13 @@ from typing import List
 
 from library.model.command.base import Command
 
-ARGUMENTS_PLAN: List[str] = [
+ARGUMENTS_PLAN_FLAG: List[str] = [
     "compact_warnings",
-    "destroy",
-    "detailed_exitcode",
     "input",
     "lock_timeout",
     "lock",
-    "no_color",
     "out",
     "parallelism",
-    "refresh_only",
     "refresh",
     "replace",
     "state",
@@ -21,24 +17,38 @@ ARGUMENTS_PLAN: List[str] = [
     "var",
 ]
 
-ARGUMENTS_APPLY: List[str] = [
-    "auto_approve",
+ARGUMENTS_FLAG_KV: List[str] = [
+    "detailed_exitcode",
+    "destroy",
+    "refresh_only",
+    "no_color",
+]
+
+ARGUMENTS_APPLY_FLAG: List[str] = [
     "backup",
-    "compact_warnings",
     "input",
     "lock_timeout",
     "lock",
-    "no_color",
     "parallelism",
     "state_out",
     "state",
 ]
 
+ARGUMENTS_APPLY_KV: List[str] = [
+    "auto_approve",
+    "compact_warnings",
+    "no_color",
+]
+
 
 class Up(Command):
     @staticmethod
-    def arguments() -> List[str]:
-        return [*{*ARGUMENTS_PLAN, *ARGUMENTS_APPLY}]
+    def arguments_flag() -> List[str]:
+        return [*{*ARGUMENTS_PLAN_FLAG, *ARGUMENTS_APPLY_FLAG}]
+
+    @staticmethod
+    def arguments_kv() -> List[str]:
+        return [*{*ARGUMENTS_PLAN_KV, *ARGUMENTS_APPLY_KV}]
 
 
 class Down(Up):
