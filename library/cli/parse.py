@@ -1,41 +1,44 @@
-from typing import List, Type
+from typing import List
 
-ArgumentPart = Type  # TODO
-
-
-def consume(tokens: List[str]) -> ArgumentPart:
-    """
-    Given a segment of tokens, consume them and produce a useful ArgumentPart
-    """
-    return f"consume({tokens})"
+from library.model.cli.argument import Argument, ArgumentCommand, ArgumentSeparator
 
 
-def segment(tokens: List[str]) -> int:
-    """
-    Given a collection of tokens,
-    return number of tokens  that constitute the first consumable part
-    """
-    return 1
+def argument_next_command(tokens: List[str]) -> (ArgumentCommand, List[str]):
+    try:
+        return ArgumentCommand(tokens[0]), tokens[1:]
+    except KeyError:
+        raise ValueError(f"no such command {tokens[0]}!")
 
 
-def parse(tokens: List[str]):
-    """
-    Given a space-split segment of raw arguments, step through and parse them
+def arguments_next_pair(tokens: List[str]) -> (Argument, List[str]):
+    # TODO check that we're not going to overflow on the second token
+    # TODO check if this is actually a flag ( need a lookup table )
+    return Argument(tokens[0].removeprefix("-"), tokens[1]), tokens[2:]
 
-    for every token that we step to we'll get a segment count :n,
-    and consume the token and :n following tokens
 
-    the product of consuming tokens are collected and update parsing state, for example
-        - consuming the command will end global collecting
-        - consuming the -- token will start key => value collecting
-    """
-    argument_parts: List[ArgumentPart] = []
-    index: int = 0
+def argument_next(tokens: List[str], did_separate: bool) -> (Argument, List[str]):
+    if not tokens:
+        raise ValueError("no tokens to read!")
 
-    while index < len(tokens):
-        end = segment(tokens)
-        argument_parts += [consume(tokens[index : index + end])]
+    if tokens[0] == "--":
+        return ArgumentSeparator(), tokens[1:]
 
-        index += end
+    if tokens[0].startswith("-") or did_separate:
+        return arguments_next_pair(tokens)
 
-    return argument_parts
+    return argument_next_command(tokens)
+
+
+def collect_arguments(tokens: List[str]) -> List[Argument]:
+    did_separate = False
+    tokens_remain = [*tokens]
+    collection = []
+
+    while tokens_remain:
+        next, tokens_remain = argument_next(tokens_remain, did_separate)
+        collection += [next]
+
+        if isinstance(next, ArgumentSeparator):
+            did_separate = True
+
+    return collection
