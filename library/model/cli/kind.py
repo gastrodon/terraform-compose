@@ -1,13 +1,9 @@
 from enum import Enum
 
-from library.model import Command, command
+from library.model.cli.argument import Argument, ArgumentCommand, ArgumentSeparator
 
 
-class CommandKind(Enum):
-    down: Command = command.Down
-    graph: Command = command.Graph
-    init: Command = command.Init
-    refresh: Command = command.Refresh
-    show: Command = command.Show
-    up: Command = command.Up
-    validate: Command = command.Validate
+class ArgumentKind(Enum):
+    argument: Argument = Argument
+    command: Argument = ArgumentCommand
+    separator: Argument = ArgumentSeparator
