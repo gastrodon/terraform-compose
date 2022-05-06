@@ -1,6 +1,3 @@
-from library.model.command.command import Command  # noqa
-from library.model.command.graph import Graph  # noqa
-from library.model.command.init import Init  # noqa
-from library.model.command.show import Show  # noqa
-from library.model.command.up_down import Down, Up  # noqa
-from library.model.command.validate import Validate  # noqa
+from library.model.command.base import Command  # noqa
+from library.model.command.command import Down, Graph, Init, Show, Up, Validate  # noqa
+from library.model.command.kind import CommandKind  # noqa
