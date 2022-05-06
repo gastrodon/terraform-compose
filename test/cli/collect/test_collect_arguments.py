@@ -40,6 +40,28 @@ cases = [
             Argument("path", "./path"),
         ],
     ],
+    [
+        [
+            "down",
+            "-path",
+            "./path",
+            "-var-file",
+            "./vars",
+            "-var",
+            "hello=world",
+            "--",
+            "service.foo.vars",
+            "hello: world",
+        ],
+        [
+            ArgumentCommand("down"),
+            Argument("path", "./path"),
+            Argument("var-file", "./vars"),
+            Argument("var", "hello=world"),
+            ArgumentSeparator(),
+            Argument("service.foo.vars", "hello: world"),
+        ],
+    ],
 ]
 
 
