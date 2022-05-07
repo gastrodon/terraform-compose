@@ -1,1 +1,1 @@
-from library.cli.collect import collect_arguments  # noqa
+from library.cli.arguments import arguments  # noqa
