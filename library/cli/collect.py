@@ -1,5 +1,6 @@
 from typing import List
 
+from library.model.cli import ArgumentScope
 from library.model.cli.argument import Argument, ArgumentCommand, ArgumentSeparator
 
 
@@ -10,35 +11,35 @@ def argument_next_command(tokens: List[str]) -> (ArgumentCommand, List[str]):
         raise ValueError(f"no such command {tokens[0]}!")
 
 
-def arguments_next_pair(tokens: List[str]) -> (Argument, List[str]):
+def arguments_next_pair(
+    tokens: List[str], scope: ArgumentScope
+) -> (Argument, List[str]):
     # TODO check that we're not going to overflow on the second token
     # TODO check if this is actually a flag ( need a lookup table )
-    return Argument(tokens[0].removeprefix("-"), tokens[1]), tokens[2:]
+    return Argument(tokens[0].removeprefix("-"), tokens[1], scope), tokens[2:]
 
 
-def argument_next(tokens: List[str], did_separate: bool) -> (Argument, List[str]):
+def argument_next(tokens: List[str], scope: ArgumentScope) -> (Argument, List[str]):
     if not tokens:
         raise ValueError("no tokens to read!")
 
     if tokens[0] == "--":
         return ArgumentSeparator(), tokens[1:]
 
-    if tokens[0].startswith("-") or did_separate:
-        return arguments_next_pair(tokens)
+    if tokens[0].startswith("-") or scope is ArgumentScope.compose:
+        return arguments_next_pair(tokens, scope)
 
     return argument_next_command(tokens)
 
 
 def collect_arguments(tokens: List[str]) -> List[Argument]:
-    did_separate = False
+    scope = ArgumentScope.terraform
     tokens_remain = [*tokens]
     collection = []
 
     while tokens_remain:
-        next, tokens_remain = argument_next(tokens_remain, did_separate)
+        next, tokens_remain = argument_next(tokens_remain, scope)
         collection += [next]
-
-        if isinstance(next, ArgumentSeparator):
-            did_separate = True
+        scope = next.scope
 
     return collection

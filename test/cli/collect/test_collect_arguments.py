@@ -3,20 +3,22 @@ from typing import List
 import pytest
 
 from library import cli
+from library.model.cli import ArgumentScope
 from library.model.cli.argument import Argument, ArgumentCommand, ArgumentSeparator
+from library.model.command import CommandKind
 
 cases = [
     [
         ["-hello", "world"],
         [
-            Argument("hello", "world"),
+            Argument("hello", "world", ArgumentScope.terraform),
         ],
     ],
     [
         ["-hello", "world", "-hello", "again"],
         [
-            Argument("hello", "world"),
-            Argument("hello", "again"),
+            Argument("hello", "world", ArgumentScope.terraform),
+            Argument("hello", "again", ArgumentScope.terraform),
         ],
     ],
     [
@@ -28,16 +30,16 @@ cases = [
     [
         ["-chdir", "/root", "--", "service.foo.path", "./bingus"],
         [
-            Argument("chdir", "/root"),
+            Argument("chdir", "/root", ArgumentScope.terraform),
             ArgumentSeparator(),
-            Argument("service.foo.path", "./bingus"),
+            Argument("service.foo.path", "./bingus", ArgumentScope.compose),
         ],
     ],
     [
         ["up", "-path", "./path"],
         [
             ArgumentCommand("up"),
-            Argument("path", "./path"),
+            Argument("path", "./path", ArgumentScope.command.value(CommandKind.up)),
         ],
     ],
     [
@@ -55,11 +57,15 @@ cases = [
         ],
         [
             ArgumentCommand("down"),
-            Argument("path", "./path"),
-            Argument("var-file", "./vars"),
-            Argument("var", "hello=world"),
+            Argument("path", "./path", ArgumentScope.command.value(CommandKind.down)),
+            Argument(
+                "var-file", "./vars", ArgumentScope.command.value(CommandKind.down)
+            ),
+            Argument(
+                "var", "hello=world", ArgumentScope.command.value(CommandKind.down)
+            ),
             ArgumentSeparator(),
-            Argument("service.foo.vars", "hello: world"),
+            Argument("service.foo.vars", "hello: world", ArgumentScope.compose),
         ],
     ],
 ]
