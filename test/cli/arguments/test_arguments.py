@@ -4,7 +4,12 @@ import pytest
 
 from library import cli
 from library.model.cli import ArgumentScope
-from library.model.cli.argument import ArgumentCommand, ArgumentKV, ArgumentSeparator
+from library.model.cli.argument import (
+    ArgumentCommand,
+    ArgumentFlag,
+    ArgumentKV,
+    ArgumentSeparator,
+)
 
 cases = [
     [
@@ -61,6 +66,13 @@ cases = [
             ArgumentKV("var", "hello=world", ArgumentScope.command),
             ArgumentSeparator(),
             ArgumentKV("service.foo.vars", "hello: world", ArgumentScope.compose),
+        ],
+    ],
+    [
+        ["init", "-reconfigure"],
+        [
+            ArgumentCommand("init"),
+            ArgumentFlag("reconfigure", ArgumentScope.command),
         ],
     ],
 ]

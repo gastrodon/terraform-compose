@@ -3,6 +3,7 @@ from typing import List
 from library.model.cli import (
     Argument,
     ArgumentCommand,
+    ArgumentFlag,
     ArgumentKV,
     ArgumentScope,
     ArgumentSeparator,
