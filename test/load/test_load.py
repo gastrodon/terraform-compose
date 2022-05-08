@@ -54,7 +54,7 @@ cases_global = [
                     path="/tf-compose/planet/earth", var={"hello": "world"}
                 ),
                 "venus": Config(
-                    path="/tf-compose/planet/earth", var={"hello": "world"}
+                    path="/tf-compose/planet/venus", var={"hello": "world"}
                 ),
             }
         ),
@@ -64,6 +64,7 @@ cases_global = [
 cases = [
     *cases_uncomplex,
     *cases_import,
+    *cases_global,
 ]
 
 

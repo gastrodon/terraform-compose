@@ -20,8 +20,8 @@ def load_imports(args: List[Argument], compose: Dict):
 def include_global(args: List[Argument], compose: Dict):
     return {
         **compose,
-        **{
-            service: transform.compose.merge(descriptor, compose.get("globals", {}))
+        "service": {
+            service: transform.compose.merge(descriptor, compose.get("global", {}))
             for service, descriptor in compose["service"].items()
         },
     }
