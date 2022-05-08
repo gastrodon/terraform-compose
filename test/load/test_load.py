@@ -2,7 +2,7 @@ from typing import Dict, List
 
 import pytest
 
-from library import load
+from library import cli, load
 from library.model import Compose, Config
 from library.resolve import resolve
 
@@ -67,9 +67,9 @@ cases = [
 ]
 
 
-@pytest.mark.parametrize("args,resolution,want", cases)
-def test_load(args: List, resolution: Dict[str, Dict], want: Compose, mocker):
+@pytest.mark.parametrize("argv,resolution,want", cases)
+def test_load(argv: List[str], resolution: Dict[str, Dict], want: Compose, mocker):
     mocker.patch("os.getcwd", return_value="/tf-compose")
     resolve.set(resolution)
 
-    assert load.load(args, "") == want
+    assert load.load(cli.arguments(argv), "") == want
