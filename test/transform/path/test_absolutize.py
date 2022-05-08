@@ -47,6 +47,10 @@ cases = [
             }
         },
     ],
+    [
+        {"service": {"computer": {"var": {"hello": "world"}}}},
+        {"service": {"computer": {"var": {"hello": "world"}}}},
+    ],
 ]
 
 

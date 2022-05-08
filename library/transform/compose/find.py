@@ -3,7 +3,7 @@ from typing import Dict, List
 
 from library.transform.compose.flatten import flatten
 
-never = re.compile("(?!x)x")
+always = re.compile(".*")
 noop = lambda it: it
 
 
@@ -13,10 +13,10 @@ def matches(key, value, key_re, value_re, separator):
     if isinstance(value, (list, tuple, set)):
         return any(matches(key, it, key_re, value_re, separator) for it in value)
 
-    if not isinstance(value, str) and value_re is never:
+    if not isinstance(value, str) and value_re is always:
         return key_re.match(key_string)
 
-    return key_re.match(key_string) or value_re.match(value)
+    return key_re.match(key_string) and value_re.match(value)
 
 
 def find(source: Dict, key=None, value=None, separator=".", lists=True) -> List[str]:
@@ -29,8 +29,8 @@ def find(source: Dict, key=None, value=None, separator=".", lists=True) -> List[
     if key is None and value is None:
         return []
 
-    key_re = re.compile(key) if key else never
-    value_re = re.compile(value) if value else never
+    key_re = re.compile(key) if key else always
+    value_re = re.compile(value) if value else always
 
     return [
         path

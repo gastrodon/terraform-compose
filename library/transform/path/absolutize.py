@@ -5,7 +5,7 @@ from typing import Dict, List, Union
 from library.transform import compose
 
 path_matchers = [
-    [r"^service\..*", "@.+$"],
+    [r"^service\..*", "^@.+$"],
     [r"^service\..+\.path$", None],
     [r"^service\..+\.backend_config$", None],
     [r"^service\..+\.state$", None],
