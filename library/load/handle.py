@@ -1,22 +1,23 @@
-from typing import Dict
+from typing import Dict, List
 
 from library import transform
 from library.load.route import handle
+from library.model.cli import Argument
 
 
 @handle
-def trace_imports(command: ..., args: ..., compose: Dict):
+def trace_imports(args: List[Argument], compose: Dict):
     transform.trace()
     return compose
 
 
 @handle
-def load_imports(command: ..., args: ..., compose: Dict):
+def load_imports(args: List[Argument], compose: Dict):
     return {**compose, "service": transform.collect()}
 
 
 @handle
-def include_global(command: ..., args: ..., compose: Dict):
+def include_global(args: List[Argument], compose: Dict):
     return compose  # TODO
 
     return {
@@ -29,50 +30,50 @@ def include_global(command: ..., args: ..., compose: Dict):
 
 
 @handle
-def include_cli(command: ..., args: ..., compose: Dict):
+def include_cli(args: List[Argument], compose: Dict):
     return compose  # TODO
 
 
 @handle
-def absolutize_paths(command: ..., args: ..., compose: Dict):
+def absolutize_paths(args: List[Argument], compose: Dict):
     return transform.path.absolutize(compose)
 
 
 @handle
-def locate_services(command: ..., args: ..., compose: Dict):
+def locate_services(args: List[Argument], compose: Dict):
     return compose  # TODO
 
 
 @handle
-def locate_dependencies(command: ..., args: ..., compose: Dict):
+def locate_dependencies(args: List[Argument], compose: Dict):
     return compose  # TODO
 
 
 @handle
-def path_dependencies(command: ..., args: ..., compose: Dict):
+def path_dependencies(args: List[Argument], compose: Dict):
     return compose  # TODO
 
 
 @handle
-def invert(command: ..., args: ..., compose: Dict):
+def invert(args: List[Argument], compose: Dict):
     return compose  # TODO
 
 
 @handle
-def pluck(command: ..., args: ..., compose: Dict):
+def pluck(args: List[Argument], compose: Dict):
     return compose  # TODO
 
 
 @handle
-def snake_case(command: ..., args: ..., compose: Dict):
+def snake_case(args: List[Argument], compose: Dict):
     return compose  # TODO
 
 
 @handle
-def bash_interop(command: ..., args: ..., compose: Dict):
+def bash_interop(args: List[Argument], compose: Dict):
     return compose  # TODO
 
 
 @handle
-def at_files(command: ..., args: ..., compose: Dict):
+def at_files(args: List[Argument], compose: Dict):
     return compose  # TODO
