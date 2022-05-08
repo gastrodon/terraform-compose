@@ -1,5 +1,5 @@
 from abc import ABC
-from typing import List
+from typing import Dict, List
 
 from library.model import Compose
 from library.model.cli.argument import Argument

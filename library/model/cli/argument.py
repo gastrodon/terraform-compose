@@ -6,27 +6,32 @@ from library.model.cli.scope import ArgumentScope
 
 @dataclass
 class Argument:
+    ...
+
+
+@dataclass
+class ArgumentKV(Argument):
     key: str
     value: Any
     scope: ArgumentScope
 
 
 @dataclass
-class ArgumentFlag:
+class ArgumentFlag(Argument):
     key: str
     scope: ArgumentScope
     value: Any = True
 
 
 @dataclass
-class ArgumentCommand:
+class ArgumentCommand(Argument):
     key: str
     value: Any = None
     scope: ArgumentScope = ArgumentScope.command
 
 
 @dataclass
-class ArgumentSeparator:
+class ArgumentSeparator(Argument):
     key: str = "--"
     value: Any = None
     scope: ArgumentScope = ArgumentScope.compose
