@@ -1,8 +1,9 @@
-from typing import List
+from typing import Dict, List
 
+from library.model.cli import Argument, ArgumentFlag
 from library.model.command.base import Command
 
-ARGUMENTS_FLAG: List[str] = [
+ARGUMENTS_KV: List[str] = [
     "backend_config",
     "backend",
     "from_module",
@@ -26,9 +27,8 @@ ARGUMENTS_FLAG: List[str] = [
 
 class Init(Command):
     @staticmethod
-    def arguments_flag() -> List[str]:
-        return ARGUMENTS_FLAG
-
-    @staticmethod
-    def arguments_kv() -> List[str]:
-        return ARGUMENTS_KV
+    def arguments() -> Dict[str, Argument]:
+        return {
+            **{it: Argument for it in ARGUMENTS_KV},
+            **{it: ArgumentFlag for it in ARGUMENTS_FLAG},
+        }

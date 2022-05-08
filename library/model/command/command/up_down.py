@@ -1,8 +1,9 @@
-from typing import List
+from typing import Dict, List
 
+from library.model.cli import Argument, ArgumentFlag
 from library.model.command.base import Command
 
-ARGUMENTS_PLAN_FLAG: List[str] = [
+ARGUMENTS_PLAN_KV: List[str] = [
     "compact_warnings",
     "input",
     "lock_timeout",
@@ -17,14 +18,13 @@ ARGUMENTS_PLAN_FLAG: List[str] = [
     "var",
 ]
 
-ARGUMENTS_FLAG_KV: List[str] = [
+ARGUMENTS_FLAG_FLAG: List[str] = [
     "detailed_exitcode",
-    "destroy",
     "refresh_only",
     "no_color",
 ]
 
-ARGUMENTS_APPLY_FLAG: List[str] = [
+ARGUMENTS_APPLY_KV: List[str] = [
     "backup",
     "input",
     "lock_timeout",
@@ -34,7 +34,7 @@ ARGUMENTS_APPLY_FLAG: List[str] = [
     "state",
 ]
 
-ARGUMENTS_APPLY_KV: List[str] = [
+ARGUMENTS_APPLY_FLAG: List[str] = [
     "auto_approve",
     "compact_warnings",
     "no_color",
@@ -43,12 +43,11 @@ ARGUMENTS_APPLY_KV: List[str] = [
 
 class Up(Command):
     @staticmethod
-    def arguments_flag() -> List[str]:
-        return [*{*ARGUMENTS_PLAN_FLAG, *ARGUMENTS_APPLY_FLAG}]
-
-    @staticmethod
-    def arguments_kv() -> List[str]:
-        return [*{*ARGUMENTS_PLAN_KV, *ARGUMENTS_APPLY_KV}]
+    def arguments() -> Dict[str, Argument]:
+        return {
+            **{it: Argument for it in ARGUMENTS_PLAN_KV + ARGUMENTS_APPLY_KV},
+            **{it: ArgumentFlag for it in ARGUMENTS_PLAN_FLAG + ARGUMENTS_APPLY_FLAG},
+        }
 
 
 class Down(Up):
