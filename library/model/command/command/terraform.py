@@ -1,12 +1,14 @@
-from typing import List
+from typing import Dict, List
 
-from library.model.cli import ArgumentFlag
+from library.model.cli import ArgumentKind
 from library.model.command.base import Command
 
-ARGUMENTS_FLAG: List[str] = ["chdir"]
+ARGUMENTS_KV: List[str] = ["chdir"]
 
 
 class Terraform(Command):
+    name = "terraform"
+
     @staticmethod
-    def arguments() -> List[str]:
-        return {it: ArgumentFlag for it in ARGUMENTS_FLAG}
+    def arguments() -> Dict[str, ArgumentKind]:
+        return {it: ArgumentKind.kv for it in ARGUMENTS_KV}

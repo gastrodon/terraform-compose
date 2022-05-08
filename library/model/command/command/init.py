@@ -1,34 +1,36 @@
 from typing import Dict, List
 
-from library.model.cli import Argument, ArgumentFlag
+from library.model.cli import ArgumentKind
 from library.model.command.base import Command
 
 ARGUMENTS_KV: List[str] = [
-    "backend_config",
+    "backend-config",
     "backend",
-    "from_module",
+    "from-module",
     "get",
-    "ignore_remote_version",
+    "ignore-remote-version",
     "input",
-    "lock_timeout",
+    "lock-timeout",
     "lock",
     "lockfile",
-    "plugin_dir",
+    "plugin-dir",
 ]
 
 ARGUMENTS_FLAG: List[str] = [
-    "force_copy",
-    "migrate_state",
-    "no_color",
+    "force-copy",
+    "migrate-state",
+    "no-color",
     "reconfigure",
     "upgrade",
 ]
 
 
 class Init(Command):
+    name = "init"
+
     @staticmethod
-    def arguments() -> Dict[str, Argument]:
+    def arguments() -> Dict[str, ArgumentKind]:
         return {
-            **{it: Argument for it in ARGUMENTS_KV},
-            **{it: ArgumentFlag for it in ARGUMENTS_FLAG},
+            **{it: ArgumentKind.kv for it in ARGUMENTS_KV},
+            **{it: ArgumentKind.flag for it in ARGUMENTS_FLAG},
         }
