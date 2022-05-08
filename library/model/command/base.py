@@ -2,18 +2,14 @@ from abc import ABC
 from typing import List
 
 from library.model import Compose
+from library.model.cli.argument import Argument
 
 
 class Command(ABC):
     @staticmethod
-    def arguments_flag() -> List[str]:
-        """A collection of flags"""
-        return []
-
-    @staticmethod
-    def arguments_kv() -> List[str]:
+    def arguments() -> Dict[str, Argument]:
         """A collection of key: value arguments"""
-        return []
+        return {}
 
     @staticmethod
     def compile(compose: Compose) -> List[List[str]]:

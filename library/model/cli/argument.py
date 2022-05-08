@@ -2,8 +2,6 @@ from dataclasses import dataclass
 from typing import Any
 
 from library.model.cli.scope import ArgumentScope
-from library.model.command import Command
-from library.model.command.kind import LOOKUP
 
 
 @dataclass
@@ -24,14 +22,7 @@ class ArgumentFlag:
 class ArgumentCommand:
     key: str
     value: Any = None
-
-    @property
-    def scope(self) -> ArgumentScope:
-        return ArgumentScope.command.value(self.command)
-
-    @property
-    def command(self) -> Command:
-        return LOOKUP[self.key]
+    scope: ArgumentScope = ArgumentScope.command
 
 
 @dataclass

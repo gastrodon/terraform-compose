@@ -1,9 +1,7 @@
 from enum import Enum
 
-from library.model.command.kind import CommandKind
-
 
 class ArgumentScope(Enum):
-    terraform = "terraform"
-    command = CommandKind
-    compose = "compose"
+    terraform: str = "terraform"
+    command: str = "command"
+    compose: str = "compose"

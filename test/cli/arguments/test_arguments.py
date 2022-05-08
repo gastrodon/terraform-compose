@@ -5,7 +5,6 @@ import pytest
 from library import cli
 from library.model.cli import ArgumentScope
 from library.model.cli.argument import Argument, ArgumentCommand, ArgumentSeparator
-from library.model.command import CommandKind
 
 cases = [
     [
@@ -39,7 +38,7 @@ cases = [
         ["up", "-path", "./path"],
         [
             ArgumentCommand("up"),
-            Argument("path", "./path", ArgumentScope.command.value(CommandKind.up)),
+            Argument("path", "./path", ArgumentScope.command),
         ],
     ],
     [
@@ -57,13 +56,9 @@ cases = [
         ],
         [
             ArgumentCommand("down"),
-            Argument("path", "./path", ArgumentScope.command.value(CommandKind.down)),
-            Argument(
-                "var-file", "./vars", ArgumentScope.command.value(CommandKind.down)
-            ),
-            Argument(
-                "var", "hello=world", ArgumentScope.command.value(CommandKind.down)
-            ),
+            Argument("path", "./path", ArgumentScope.command),
+            Argument("var-file", "./vars", ArgumentScope.command),
+            Argument("var", "hello=world", ArgumentScope.command),
             ArgumentSeparator(),
             Argument("service.foo.vars", "hello: world", ArgumentScope.compose),
         ],
@@ -75,7 +70,3 @@ cases = [
 def test_collect_arguments(tokens: List[str], want: List[Argument]):
     collect = cli.arguments(tokens)
     assert collect == want
-
-    for argument in collect:
-        if isinstance(argument, ArgumentCommand):
-            assert argument.command is not None
