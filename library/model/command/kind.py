@@ -6,6 +6,7 @@ from library.model.command.base import Command
 
 
 class CommandKind(Enum):
+    terraform: Command = command.Terraform
     down: Command = command.Down
     graph: Command = command.Graph
     init: Command = command.Init
@@ -14,7 +15,8 @@ class CommandKind(Enum):
     validate: Command = command.Validate
 
 
-LOOKUP: Dict[str, CommandKind] = {
+COMMAND_KIND_LOOKUP: Dict[str, CommandKind] = {
+    "terraform": CommandKind.terraform,
     "down": CommandKind.down,
     "graph": CommandKind.graph,
     "init": CommandKind.init,

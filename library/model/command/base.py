@@ -6,6 +6,8 @@ from library.model.cli.argument import Argument
 
 
 class Command(ABC):
+    name: str
+
     @staticmethod
     def arguments() -> Dict[str, Argument]:
         """A collection of key: value arguments"""
