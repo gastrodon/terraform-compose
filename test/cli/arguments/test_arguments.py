@@ -8,16 +8,16 @@ from library.model.cli.argument import ArgumentCommand, ArgumentKV, ArgumentSepa
 
 cases = [
     [
-        ["-hello", "world"],
+        ["-chdir", "world"],
         [
-            ArgumentKV("hello", "world", ArgumentScope.terraform),
+            ArgumentKV("chdir", "world", ArgumentScope.terraform),
         ],
     ],
     [
-        ["-hello", "world", "-hello", "again"],
+        ["-chdir", "world", "-chdir", "again"],
         [
-            ArgumentKV("hello", "world", ArgumentScope.terraform),
-            ArgumentKV("hello", "again", ArgumentScope.terraform),
+            ArgumentKV("chdir", "world", ArgumentScope.terraform),
+            ArgumentKV("chdir", "again", ArgumentScope.terraform),
         ],
     ],
     [
@@ -35,17 +35,17 @@ cases = [
         ],
     ],
     [
-        ["up", "-path", "./path"],
+        ["up", "-var-file", "./var"],
         [
             ArgumentCommand("up"),
-            ArgumentKV("path", "./path", ArgumentScope.command),
+            ArgumentKV("var-file", "./var", ArgumentScope.command),
         ],
     ],
     [
         [
             "down",
-            "-path",
-            "./path",
+            "-out",
+            "./out",
             "-var-file",
             "./vars",
             "-var",
@@ -56,7 +56,7 @@ cases = [
         ],
         [
             ArgumentCommand("down"),
-            ArgumentKV("path", "./path", ArgumentScope.command),
+            ArgumentKV("out", "./out", ArgumentScope.command),
             ArgumentKV("var-file", "./vars", ArgumentScope.command),
             ArgumentKV("var", "hello=world", ArgumentScope.command),
             ArgumentSeparator(),
