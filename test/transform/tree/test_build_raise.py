@@ -11,6 +11,23 @@ cases = [
         {"root": {"depends-on": ["root"]}},
         "root -> root",
     ],
+    [
+        "root",
+        {
+            "root": {"depends-on": ["branch"]},
+            "branch": {"depends-on": ["root"]},
+        },
+        "root -> branch -> root",
+    ],
+    [
+        "root",
+        {
+            "root": {"depends-on": ["branch"]},
+            "branch": {"depends-on": ["child"]},
+            "child": {"depends-on": ["branch"]},
+        },
+        "root -> branch -> child -> branch",
+    ],
 ]
 
 
