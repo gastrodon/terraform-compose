@@ -71,7 +71,10 @@ jobs:
           name: terraform-compose-project
           path: terraform-compose
       - name: install depends
-        run: pip install $(cat ./terraform-compose/requirements.*)
+        run: |
+          pip install \
+            -r ./terraform-compose/requirements.txt \
+            -r ./terraform-compose/requirements.test.txt
       - name: build terraform-compose
         env:
           PYTHONPATH: ./terraform-compose
