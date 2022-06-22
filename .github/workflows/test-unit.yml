@@ -16,7 +16,7 @@ jobs:
       - name: artifact code
         uses: actions/upload-artifact@v3
         with:
-          name: terraform-compose
+          name: terraform-compose-project
           path: ./terraform-compose
 
   run-tests:
@@ -46,7 +46,7 @@ jobs:
       - name: download terraform-compose
         uses: actions/download-artifact@v3
         with:
-          name: terraform-compose
+          name: terraform-compose-project
           path: terraform-compose
       - name: install depends
         run: pip install $(cat ./terraform-compose/requirements.*)
@@ -68,7 +68,7 @@ jobs:
       - name: download terraform-compose
         uses: actions/download-artifact@v3
         with:
-          name: terraform-compose
+          name: terraform-compose-project
           path: terraform-compose
       - name: install depends
         run: pip install $(cat ./terraform-compose/requirements.*)
@@ -76,3 +76,8 @@ jobs:
         env:
           PYTHONPATH: ./terraform-compose
         run: pyinstaller -F ./terraform-compose/main.py -n terraform-compose
+      - name: artifact code
+        uses: actions/upload-artifact@v3
+        with:
+          name: terraform-compose
+          path: ./dist/terraform-compose
