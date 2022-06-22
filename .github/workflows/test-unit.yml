@@ -49,8 +49,30 @@ jobs:
           name: terraform-compose
           path: terraform-compose
       - name: install depends
-        run: pip install $(cat ./terraform-compose/requirements.{test,}.txt )
+        run: pip install $(cat ./terraform-compose/requirements.*)
       - name: run tests
         env:
           PYTHONPATH: ./terraform-compose
-        run: python -m pytest -vv --cov terraform-composeg
+        run: python -m pytest -vv --cov terraform-compose
+
+  build:
+    runs-on: ubuntu-latest
+
+    container: python:latest
+
+    needs:
+      - collect-code
+      - run-tests
+
+    steps:
+      - name: download terraform-compose
+        uses: actions/download-artifact@v3
+        with:
+          name: terraform-compose
+          path: terraform-compose
+      - name: install depends
+        run: pip install $(cat ./terraform-compose/requirements.*)
+      - name: build terraform-compose
+        env:
+          PYTHONPATH: ./terraform-compose
+        run: pyinstaller -F ./terraform-compose/main.py -n terraform-compose
