@@ -19,3 +19,18 @@ def build(name: str, services: Dict, path: List[str] = []) -> DependsNode:
 
 def build_lookup(compose: Dict) -> Dict[str, DependsNode]:
     return {name: build(name, compose["services"]) for name in compose.keys()}
+
+
+def build_lookup_inverse(compose: Dict) -> Dict[str, DependsNode]:
+    inverted: Dict = {
+        name: {
+            "depends-on": [
+                sub_name
+                for sub_name, service in compose["services"].items()
+                if name in service.get("depends-on", [])
+            ]
+        }
+        for name in compose["services"].keys()
+    }
+
+    return inverted
