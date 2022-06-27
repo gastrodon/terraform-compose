@@ -79,7 +79,7 @@ jobs:
         env:
           PYTHONPATH: ./terraform-compose
         run: pyinstaller -F ./terraform-compose/main.py -n terraform-compose
-      - name: artifact code
+      - name: artifact binary
         uses: actions/upload-artifact@v3
         with:
           name: terraform-compose
