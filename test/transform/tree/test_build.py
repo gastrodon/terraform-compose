@@ -8,14 +8,14 @@ from library.transform import tree
 cases = [
     [
         "root",
-        {"root": {}},
+        {"root": {"depends-on": []}},
         DependsNode(path=["root"]),
     ],
     [
         "root",
         {
             "root": {"depends-on": ["child"]},
-            "child": {},
+            "child": {"depends-on": []},
         },
         DependsNode(
             path=["root"],
@@ -27,7 +27,7 @@ cases = [
         {
             "root": {"depends-on": ["child", "sibling"]},
             "sibling": {"depends-on": ["child"]},
-            "child": {},
+            "child": {"depends-on": []},
         },
         DependsNode(
             path=["root"],
