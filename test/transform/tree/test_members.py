@@ -6,36 +6,30 @@ from library.transform import tree
 
 cases = [
     [
+        "root",
         {
             "root": {"depends-on": []},
         },
-        [
-            {"root"},
-        ],
+        {"root"},
     ],
     [
+        "root",
         {
             "root": {"depends-on": ["child"]},
             "child": {"depends-on": []},
             "silo": {"depends-on": []},
         },
-        [
-            {"child", "silo"},
-            {"root"},
-        ],
+        {"root", "child"},
     ],
     [
+        "root",
         {
             "root": {"depends-on": ["child", "neighbor"]},
             "neighbor": {"depends-on": ["child"]},
             "child": {"depends-on": []},
             "silo": {"depends-on": []},
         },
-        [
-            {"child", "silo"},
-            {"neighbor"},
-            {"root"},
-        ],
+        {"root", "child", "neighbor"},
     ],
 ]
 
