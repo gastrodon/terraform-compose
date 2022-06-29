@@ -12,7 +12,7 @@ def namespace(space: str, name: str):
 
 
 def trace(name: str = "", parents: Set = set()):
-    if not (imports := resolve.get(name).get("import", [])):
+    if not (imports := resolve.get(name).get("require", [])):
         return
 
     if name:
@@ -28,7 +28,7 @@ def trace(name: str = "", parents: Set = set()):
 def collect_single(name: str = "") -> Dict:
     compose = resolve.get(name)
     imports = [
-        namespace(name, import_name) for import_name in compose.get("import", [])
+        namespace(name, import_name) for import_name in compose.get("require", [])
     ]
 
     return {
