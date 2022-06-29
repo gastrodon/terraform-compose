@@ -12,8 +12,8 @@ def trace_imports(args: List[Argument], compose: Dict):
 
 
 @handle
-def load_imports(args: List[Argument], compose: Dict):
-    return {**compose, "service": transform.collect()}
+def satisfy_requires(args: List[Argument], compose: Dict):
+    return compose  # TODO
 
 
 @handle
