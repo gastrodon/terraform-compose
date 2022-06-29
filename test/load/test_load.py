@@ -61,10 +61,37 @@ cases_global = [
     ]
 ]
 
+cases_arguments = [
+    [
+        ["init", "-reconfigure"],
+        {
+            "": {
+                "service": {
+                    "earth": {"path": "./planet/earth"},
+                    "venus": {"path": "./planet/venus"},
+                }
+            }
+        },
+        Compose(
+            service={
+                "earth": Config(
+                    path="/tf-compose/planet/earth",
+                    reconfigure=True,
+                ),
+                "venus": Config(
+                    path="/tf-compose/planet/venus",
+                    reconfigure=True,
+                ),
+            }
+        ),
+    ]
+]
+
 cases = [
     *cases_uncomplex,
     *cases_import,
     *cases_global,
+    *cases_arguments,
 ]
 
 

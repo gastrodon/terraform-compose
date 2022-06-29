@@ -1,6 +1,6 @@
 from typing import Dict, List
 
-from library import transform
+from library import cli, transform
 from library.load.route import handle
 from library.model.cli import Argument
 
@@ -29,7 +29,10 @@ def include_global(args: List[Argument], compose: Dict):
 
 @handle
 def include_cli(args: List[Argument], compose: Dict):
-    return compose  # TODO
+    return {
+        **compose,
+        "service": cli.interpolate(compose["service"], args),
+    }
 
 
 @handle
