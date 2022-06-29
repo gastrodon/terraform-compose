@@ -27,8 +27,8 @@ def gather(name: str = "", file: str = COMPOSE_FILE):
     with open(path_to(name, file)) as stream:
         lookup[name] = yaml.safe_load(stream)
 
-    for imported in lookup[name].get("import", []):
-        gather(".".join((name, imported)) if name else imported, file)
+    for required in lookup[name].get("require", []):
+        gather(".".join((name, required)) if name else required, file)
 
 
 def set(composes: Dict[str, Dict]):

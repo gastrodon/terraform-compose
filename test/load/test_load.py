@@ -14,28 +14,6 @@ cases_uncomplex = [
     ],
 ]
 
-cases_import = [
-    [
-        [],
-        {
-            "": {"import": ["remote"]},
-            "remote": {"service": {"hello": {"path": "./world"}}},
-        },
-        Compose(service={"remote.hello": Config(path="/tf-compose/remote/world")}),
-    ],
-    [
-        [],
-        {
-            "": {"import": ["remote"]},
-            "remote": {"import": ["tiny"]},
-            "remote.tiny": {"service": {"hello": {"path": "./world"}}},
-        },
-        Compose(
-            service={"remote.tiny.hello": Config(path="/tf-compose/remote/tiny/world")}
-        ),
-    ],
-]
-
 cases_global = [
     [
         [],
@@ -89,7 +67,6 @@ cases_arguments = [
 
 cases = [
     *cases_uncomplex,
-    *cases_import,
     *cases_global,
     *cases_arguments,
 ]
