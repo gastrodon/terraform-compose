@@ -5,6 +5,7 @@ import pytest
 from library import cli
 from library.model.cli import ArgumentScope
 from library.model.cli.argument import (
+    Argument,
     ArgumentCommand,
     ArgumentFlag,
     ArgumentKV,
@@ -79,6 +80,6 @@ cases = [
 
 
 @pytest.mark.parametrize("tokens,want", cases)
-def test_collect_arguments(tokens: List[str], want: List[ArgumentKV]):
+def test_collect_arguments(tokens: List[str], want: List[Argument]):
     collect = cli.arguments(tokens)
     assert collect == want
