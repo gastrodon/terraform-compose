@@ -60,6 +60,19 @@ cases = [
             ["service", "world", "path"],
         ],
     ],
+    [
+        {
+            "service": {
+                "hello": {"path": ".", "reconfigure": True},
+                "world": {"path": ".", "reconfigure": True},
+            }
+        },
+        {"value": r"True", "separator": "-"},
+        [
+            ["service", "hello", "reconfigure"],
+            ["service", "world", "reconfigure"],
+        ],
+    ],
 ]
 
 

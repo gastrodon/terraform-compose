@@ -16,6 +16,9 @@ def matches(key, value, key_re, value_re, separator):
     if not isinstance(value, str) and value_re is always:
         return key_re.match(key_string)
 
+    if isinstance(value, bool):
+        return key_re.match(key_string) and value_re.match(str(value))
+
     return key_re.match(key_string) and value_re.match(value)
 
 
