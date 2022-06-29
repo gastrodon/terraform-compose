@@ -1,6 +1,7 @@
+import functools
 from typing import Dict, List, Optional, Any,  Union
 
-from library import transform
+from library.transform import compose
 from library.model.cli import (
     Argument,
     ArgumentScope,
@@ -18,7 +19,7 @@ def serialize(argument: Argument) -> Optional[Union[str, Any]]:
 
 
 def interpolate(services: Dict, arguments: List[Argument]) -> Dict:
-    command_mergeable = {
+    mergeable = {
         key: value
         for key, value in filter(
             bool,
@@ -30,7 +31,19 @@ def interpolate(services: Dict, arguments: List[Argument]) -> Dict:
         )
     }
 
-    return {
-        name: transform.compose.merge(descriptor, command_mergeable)
+    merged = {
+        name: compose.merge(descriptor, mergeable)
         for name, descriptor in services.items()
     }
+
+    insertions = [
+        (argument.key.split("."), argument.value)
+        for argument in arguments
+        if argument.scope == ArgumentScope.compose
+        and argument.kind != ArgumentKind.separator
+    ]
+
+    return functools.reduce(
+        lambda last, insertion: compose.insert(last, insertion[0], insertion[1]),
+        [merged, *insertions]
+    )
