@@ -7,13 +7,13 @@ from library.transform.compose import collect
 
 cases = [
     {
-        "": {"import": ["hello"]},
-        "hello": {"import": ["world"]},
+        "": {"require": ["hello"]},
+        "hello": {"require": ["world"]},
         "hello.world": {},
     }
 ]
 
-cases_no_compose = [{"": {"import": ["hello"]}}]
+cases_no_compose = [{"": {"require": ["hello"]}}]
 
 
 @pytest.mark.parametrize("resolution", cases)

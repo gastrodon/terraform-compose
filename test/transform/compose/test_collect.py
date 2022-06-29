@@ -8,7 +8,7 @@ from library.transform.compose import collect
 cases = [
     [
         {
-            "": {"import": ["hello"]},
+            "": {"require": ["hello"]},
             "hello": {"service": {"world": {"path": "./planet/earth"}}},
         },
         {
