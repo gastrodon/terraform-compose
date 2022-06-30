@@ -9,26 +9,27 @@ from library.value import COMPOSE_FILE
 lookup: Dict[str, Any] = {}
 
 
-def path_to(name: str, file: str = COMPOSE_FILE) -> str:
+def path_to(name: str, context: str, file: str) -> str:
     return os.path.abspath(
         os.path.join(
+            context,
             *name.split("."),
             COMPOSE_FILE,
         )
     )
 
 
-def gather(name: str = "", file: str = COMPOSE_FILE):
+def gather(name: str = "", context: str = ".", file: str = COMPOSE_FILE):
     global lookup
 
     if lookup.get(name):
         return
 
-    with open(path_to(name, file)) as stream:
+    with open(path_to(name, context, file)) as stream:
         lookup[name] = yaml.safe_load(stream)
 
     for imported in lookup[name].get("import", []):
-        gather(".".join((name, imported)) if name else imported, file)
+        gather(".".join((name, imported)) if name else imported, context, file)
 
 
 def set(composes: Dict[str, Dict]):
