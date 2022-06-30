@@ -3,7 +3,7 @@ from typing import Dict, List
 from library.model.cli import ArgumentKind
 from library.model.command.base import Command
 
-ARGUMENTS_KV: List[str] = ["compose"]
+ARGUMENTS_KV: List[str] = ["file", "context"]
 
 
 class Terraform(Command):
