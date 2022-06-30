@@ -80,6 +80,5 @@ cases = [
 
 
 @pytest.mark.parametrize("tokens,want", cases)
-def test_collect_arguments(tokens: List[str], want: List[Argument]):
-    collect = cli.arguments(tokens)
-    assert collect == want
+def test_arguments(tokens: List[str], want: List[Argument]):
+    assert cli.arguments(tokens) == want
