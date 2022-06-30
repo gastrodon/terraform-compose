@@ -1,15 +1,21 @@
 #!/usr/bin/env python3
 from os import sys
 
-from library import cli, load, resolve
+from library import cli, execute, resolve, value
+from library.model.cli import ArgumentScope
+from library.transform import compose
 
 
 def main():
-    resolve.gather()
+    arguments = cli.arguments(sys.argv[1:])
 
-    loaded = load.load(cli.arguments(sys.argv[1:]), "")
+    terraform_opts = compose.merge(
+        value.TERRAFORM_OPTS,
+        cli.collect(arguments, ArgumentScope.terraform),
+    )
 
-    print(loaded)
+    resolve.gather("", terraform_opts["context"], terraform_opts["file"])
+    execute.execute("", arguments)
 
 
 if __name__ == "__main__":
