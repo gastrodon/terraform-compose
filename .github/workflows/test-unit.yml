@@ -65,13 +65,13 @@ jobs:
 
     runs-on: ${{ matrix.platform }}
 
-    container: python:latest
-
     needs:
       - collect-code
       - run-tests
 
     steps:
+      - name: reflect
+        run: python --version && pip --version
       - name: download terraform-compose
         uses: actions/download-artifact@v3
         with:
