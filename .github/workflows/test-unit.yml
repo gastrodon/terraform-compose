@@ -20,8 +20,6 @@ jobs:
           path: ./terraform-compose
 
   run-tests:
-    runs-on: ubuntu-latest
-
     strategy:
       matrix:
         python:
@@ -31,6 +29,8 @@ jobs:
           - '3.10-alpine'
           - '3.11-rc'
           - '3.11-rc-alpine'
+
+    runs-on: ubuntu-latest
 
     container:
       image: python:${{ matrix.python }}
@@ -57,7 +57,13 @@ jobs:
         run: python -m pytest -vv --cov terraform-compose
 
   build:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        platform:
+          - ubuntu-latest
+          - macos-latest
+
+    runs-on: ${{ matrix.platform }}
 
     container: python:latest
 
@@ -83,5 +89,5 @@ jobs:
       - name: artifact binary
         uses: actions/upload-artifact@v3
         with:
-          name: terraform-compose
+          name: terraform-compose-${{ matrix.platform }}
           path: ./dist/terraform-compose
