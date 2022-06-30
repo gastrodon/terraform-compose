@@ -3,6 +3,7 @@ from typing import Dict, List
 from library import cli, transform
 from library.load.route import handle
 from library.model.cli import Argument
+from library.transform import path
 
 
 @handle
@@ -37,7 +38,7 @@ def include_cli(args: List[Argument], compose: Dict):
 
 @handle
 def absolutize_paths(args: List[Argument], compose: Dict):
-    return transform.path.absolutize(compose)
+    return path.absolutize(compose)
 
 
 @handle
