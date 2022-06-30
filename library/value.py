@@ -1,9 +1,9 @@
 from typing import Dict
 
-CONTEXT_PATH: str = ""
+CONTEXT: str = ""
 COMPOSE_FILE: str = "terraform-compose.yml"
 
 TERRAFORM_OPTS: Dict = {
-    "context": CONTEXT_PATH,
+    "context": CONTEXT,
     "file": COMPOSE_FILE,
 }

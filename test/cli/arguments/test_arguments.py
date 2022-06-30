@@ -14,16 +14,16 @@ from library.model.cli.argument import (
 
 cases = [
     [
-        ["-compose", "compose.yml"],
+        ["-file", "compose.yml"],
         [
-            ArgumentKV("compose", "compose.yml", ArgumentScope.terraform),
+            ArgumentKV("file", "compose.yml", ArgumentScope.terraform),
         ],
     ],
     [
-        ["-compose", "./foo/compose", "-compose", "./bar/compose"],
+        ["-context", "./foo/compose", "-context", "./bar/compose"],
         [
-            ArgumentKV("compose", "./foo/compose", ArgumentScope.terraform),
-            ArgumentKV("compose", "./bar/compose", ArgumentScope.terraform),
+            ArgumentKV("context", "./foo/compose", ArgumentScope.terraform),
+            ArgumentKV("context", "./bar/compose", ArgumentScope.terraform),
         ],
     ],
     [
@@ -33,9 +33,9 @@ cases = [
         ],
     ],
     [
-        ["-compose", "/root", "--", "service.foo.path", "./bingus"],
+        ["-context", "/root", "--", "service.foo.path", "./bingus"],
         [
-            ArgumentKV("compose", "/root", ArgumentScope.terraform),
+            ArgumentKV("context", "/root", ArgumentScope.terraform),
             ArgumentSeparator(),
             ArgumentKV("service.foo.path", "./bingus", ArgumentScope.compose),
         ],

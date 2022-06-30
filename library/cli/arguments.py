@@ -8,7 +8,7 @@ from library.model.cli import (
     ArgumentScope,
     ArgumentSeparator,
 )
-from library.model.cli.parse import ParseContext
+from library.model.cli.parse import ParseContext, Parser
 from library.model.command import CommandKind
 from library.model.cli import ArgumentKind
 from library.model.command.kind import COMMAND_KIND_LOOKUP
@@ -60,20 +60,31 @@ def next_named(context: ParseContext) -> (Argument, ParseContext):
         )
 
     name = context.tokens[0].removeprefix("-")
-    match context.command.value.arguments().get(name):
+    parser = context.command.value.arguments().get(name)
+    if not parser:
+        raise Exception(f"{context.command.name} can't parse {name}!")
+
+    match parser.kind:
         case ArgumentKind.kv:
             require_kv(context.tokens)
             return (
-                ArgumentKV(name, context.tokens[1], context.scope),
+                ArgumentKV(
+                    name,
+                    parser.parse(context.tokens[1]),
+                    context.scope,
+                ),
                 update(context, skip=2),
             )
         case ArgumentKind.flag:
             return (
-                ArgumentFlag(name, context.scope),
+                ArgumentFlag(
+                    name,
+                    context.scope,
+                ),
                 update(context, skip=1),
             )
         case _:
-            raise Exception(f"{context.command.name} can't handle {name}!")
+            raise Exception(f"{context.command.name} has unknown kind {parser.kind}!")
 
 
 def next_argument(context: ParseContext) -> (Argument, ParseContext):
