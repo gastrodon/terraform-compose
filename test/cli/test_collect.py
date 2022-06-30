@@ -4,7 +4,13 @@ import pytest
 
 from library import cli
 from library.model.cli import ArgumentScope
-from library.model.cli.argument import Argument, ArgumentFlag, ArgumentKV
+from library.model.cli.argument import (
+    Argument,
+    ArgumentCommand,
+    ArgumentFlag,
+    ArgumentKV,
+    ArgumentSeparator,
+)
 
 cases = [
     [
@@ -28,6 +34,22 @@ cases = [
         ],
         ArgumentScope.compose,
         {"bar": True},
+    ],
+    [
+        [
+            ArgumentFlag("foo", ArgumentScope.terraform),
+            ArgumentKV("foo", "bar", ArgumentScope.compose),
+        ],
+        None,
+        {"foo": "bar"},
+    ],
+    [
+        [
+            ArgumentCommand("init"),
+            ArgumentSeparator(),
+        ],
+        None,
+        {},
     ],
 ]
 
