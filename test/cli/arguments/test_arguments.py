@@ -76,9 +76,16 @@ cases = [
             ArgumentFlag("reconfigure", ArgumentScope.command),
         ],
     ],
+    [
+        ["up", "-var-file", "./foobar", "-var-file", "./baz"],
+        [
+            ArgumentCommand("up"),
+            ArgumentKV("var-file", ["./foobar", "./baz"], ArgumentScope.command),
+        ],
+    ],
 ]
 
 
 @pytest.mark.parametrize("tokens,want", cases)
 def test_arguments(tokens: List[str], want: List[Argument]):
-    assert cli.arguments(tokens) == want
+    assert cli.arguments(tokens) == cli.sort(want)

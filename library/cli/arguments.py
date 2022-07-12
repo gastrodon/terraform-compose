@@ -1,5 +1,7 @@
 from typing import List
 
+from library.cli.compress import compress
+from library.cli.sort import sort
 from library.model.cli import (
     Argument,
     ArgumentCommand,
@@ -8,11 +10,10 @@ from library.model.cli import (
     ArgumentScope,
     ArgumentSeparator,
 )
+from library.model.cli import ArgumentKind
 from library.model.cli.parse import ParseContext, Parser
 from library.model.command import CommandKind
-from library.model.cli import ArgumentKind
 from library.model.command.kind import COMMAND_KIND_LOOKUP
-
 
 def update(
     context: ParseContext,
@@ -108,4 +109,10 @@ def arguments(tokens: List[str]) -> List[Argument]:
         next, context = next_argument(context)
         collection += [next]
 
-    return collection
+    return sort(
+        [
+            compressed
+            for scope in [ArgumentScope.terraform, ArgumentScope.command, ArgumentScope.compose]
+            for compressed in filter(lambda it: it.scope == scope, compress(collection, scope))
+        ]
+    )

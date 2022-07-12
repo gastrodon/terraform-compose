@@ -45,6 +45,14 @@ cases = [
     ],
     [
         [
+            ArgumentFlag("foo", ArgumentScope.terraform),
+            ArgumentKV("foo", ["bar", "baz"], ArgumentScope.compose),
+        ],
+        None,
+        {"foo": ["bar", "baz"]},
+    ],
+    [
+        [
             ArgumentCommand("init"),
             ArgumentSeparator(),
         ],
