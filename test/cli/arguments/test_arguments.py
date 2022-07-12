@@ -64,7 +64,7 @@ cases = [
             ArgumentCommand("down"),
             ArgumentKV("out", "./out", ArgumentScope.command),
             ArgumentKV("var-file", ["./vars"], ArgumentScope.command),
-            ArgumentKV("var", "hello=world", ArgumentScope.command),
+            ArgumentKV("var", {"hello": "world"}, ArgumentScope.command),
             ArgumentSeparator(),
             ArgumentKV("service.foo.vars", "hello: world", ArgumentScope.compose),
         ],

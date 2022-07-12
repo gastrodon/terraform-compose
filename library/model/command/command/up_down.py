@@ -17,7 +17,7 @@ ARGUMENTS_PLAN: Dict[str, Parser] = {
     "state": Parser(ArgumentKind.kv),
     "target": Parser(ArgumentKind.kv, parser=parse.listy),
     "var-file": Parser(ArgumentKind.kv, parser=parse.listy),
-    "var": Parser(ArgumentKind.kv),
+    "var": Parser(ArgumentKind.kv, parser=parse.dicty),
     "detailed_exitcode": Parser(ArgumentKind.flag, False),
     "refresh-only": Parser(ArgumentKind.flag, False),
     "no-color": Parser(ArgumentKind.flag, False),
