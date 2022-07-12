@@ -1,5 +1,6 @@
 from typing import Dict
 
+from library.cli import parse
 from library.model.cli import ArgumentKind
 from library.model.cli.parse import Parser
 from library.model.command.base import Command
@@ -11,11 +12,11 @@ ARGUMENTS_PLAN: Dict[str, Parser] = {
     "lock": Parser(ArgumentKind.kv),
     "out": Parser(ArgumentKind.kv),
     "parallelism": Parser(ArgumentKind.kv),
-    "refresh": Parser(ArgumentKind.kv),
+    "refresh": Parser(ArgumentKind.kv, parser=parse.listy),
     "replace": Parser(ArgumentKind.kv),
     "state": Parser(ArgumentKind.kv),
-    "target": Parser(ArgumentKind.kv),
-    "var-file": Parser(ArgumentKind.kv),
+    "target": Parser(ArgumentKind.kv, parser=parse.listy),
+    "var-file": Parser(ArgumentKind.kv, parser=parse.listy),
     "var": Parser(ArgumentKind.kv),
     "detailed_exitcode": Parser(ArgumentKind.flag, False),
     "refresh-only": Parser(ArgumentKind.flag, False),
