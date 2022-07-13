@@ -69,19 +69,12 @@ def next_named(context: ParseContext) -> (Argument, ParseContext):
         case ArgumentKind.kv:
             require_kv(context.tokens)
             return (
-                ArgumentKV(
-                    name,
-                    parser.parse(context.tokens[1]),
-                    context.scope,
-                ),
+                ArgumentKV(name, parser.parse(context.tokens[1]), context.scope),
                 update(context, skip=2),
             )
         case ArgumentKind.flag:
             return (
-                ArgumentFlag(
-                    name,
-                    context.scope,
-                ),
+                ArgumentFlag(name, context.scope),
                 update(context, skip=1),
             )
         case _:
