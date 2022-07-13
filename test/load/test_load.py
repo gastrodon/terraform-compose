@@ -12,6 +12,16 @@ cases_uncomplex = [
         {"": {"service": {"hello": {"path": "./world"}}}},
         Compose(service={"hello": Service(path="/tf-compose/world")}),
     ],
+    [
+        [],
+        {"": {"service": {"hello": {"var-file": ["./foobar"]}}}},
+        Compose(service={"hello": Service(var_file=["/tf-compose/foobar"])}),
+    ],
+    [
+        [],
+        {"": {"service": {"hello": {"state-out": "./state"}}}},
+        Compose(service={"hello": Service(state_out="/tf-compose/state")}),
+    ],
 ]
 
 cases_import = [

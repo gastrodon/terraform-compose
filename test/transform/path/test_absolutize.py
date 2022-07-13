@@ -36,14 +36,14 @@ cases = [
     [
         {
             "service": {
-                "computer": {"backend_config": ["./backend"]},
-                "cloud.computer": {"backend_config": ["./backend"]},
+                "computer": {"backend-config": ["./backend"]},
+                "cloud.computer": {"backend-config": ["./backend"]},
             }
         },
         {
             "service": {
-                "computer": {"backend_config": ["/tf-compose/backend"]},
-                "cloud.computer": {"backend_config": ["/tf-compose/cloud/backend"]},
+                "computer": {"backend-config": ["/tf-compose/backend"]},
+                "cloud.computer": {"backend-config": ["/tf-compose/cloud/backend"]},
             }
         },
     ],

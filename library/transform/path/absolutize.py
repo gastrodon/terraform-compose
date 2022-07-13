@@ -7,10 +7,10 @@ from library.transform import compose
 path_matchers = [
     [r"^service\..*", "^@.+$"],
     [r"^service\..+\.path$", None],
-    [r"^service\..+\.backend_config$", None],
+    [r"^service\..+\.backend-config$", None],
     [r"^service\..+\.state$", None],
-    [r"^service\..+\.state_out$", None],
-    [r"^service\..+\.var_file$", None],
+    [r"^service\..+\.state-out$", None],
+    [r"^service\..+\.var-file$", None],
     [r"^service\..+\.backup$", None],
 ]
 
