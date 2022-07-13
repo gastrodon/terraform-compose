@@ -94,7 +94,32 @@ cases_arguments = [
                 ),
             }
         ),
-    ]
+    ],
+    [
+        ["up", "-var-file", "./woomy"],
+        {
+            "": {
+                "service": {
+                    "earth": {"path": "./planet/earth", "var-file": ["splat"]},
+                    "venus": {
+                        "path": "./planet/venus",
+                    },
+                }
+            }
+        },
+        Compose(
+            service={
+                "earth": Service(
+                    path="/tf-compose/planet/earth",
+                    var_file=["/tf-compose/splat", "/tf-compose/woomy"],
+                ),
+                "venus": Service(
+                    path="/tf-compose/planet/venus",
+                    var_file=["/tf-compose/woomy"],
+                ),
+            }
+        ),
+    ],
 ]
 
 cases = [
