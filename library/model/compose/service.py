@@ -3,7 +3,7 @@ from typing import Any, Dict, List, Optional
 
 
 @dataclass
-class Config:
+class Service:
     path: str = "."
     no_destroy: bool = False
 

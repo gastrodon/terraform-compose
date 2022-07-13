@@ -3,12 +3,12 @@ from typing import Dict
 
 import dacite
 
-from library.model.config import Config
+from library.model.compose.service import Service
 
 
 @dataclass
 class Compose:
-    service: Dict[str, Config] = field(default_factory=dict)
+    service: Dict[str, Service] = field(default_factory=dict)
 
 
 def from_dict(compose: Dict) -> Compose:

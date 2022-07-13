@@ -1,8 +1,8 @@
 from abc import ABC
 from typing import Dict, List
 
-from library.model import Compose
 from library.model.cli.argument import Argument
+from library.model.compose import Compose
 
 
 class Command(ABC):

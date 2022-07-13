@@ -1,4 +1,4 @@
-from library.model import Parse
+from library.model.compose import Parse
 
 parse = Parse()
 

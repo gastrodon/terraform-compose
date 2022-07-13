@@ -3,14 +3,14 @@ from typing import Dict, List
 import pytest
 
 from library import cli, load
-from library.model import Compose, Config
+from library.model.compose import Compose, Service
 from library.resolve import resolve
 
 cases_uncomplex = [
     [
         [],
         {"": {"service": {"hello": {"path": "./world"}}}},
-        Compose(service={"hello": Config(path="/tf-compose/world")}),
+        Compose(service={"hello": Service(path="/tf-compose/world")}),
     ],
 ]
 
@@ -21,7 +21,7 @@ cases_import = [
             "": {"import": ["remote"]},
             "remote": {"service": {"hello": {"path": "./world"}}},
         },
-        Compose(service={"remote.hello": Config(path="/tf-compose/remote/world")}),
+        Compose(service={"remote.hello": Service(path="/tf-compose/remote/world")}),
     ],
     [
         [],
@@ -31,7 +31,7 @@ cases_import = [
             "remote.tiny": {"service": {"hello": {"path": "./world"}}},
         },
         Compose(
-            service={"remote.tiny.hello": Config(path="/tf-compose/remote/tiny/world")}
+            service={"remote.tiny.hello": Service(path="/tf-compose/remote/tiny/world")}
         ),
     ],
 ]
@@ -50,10 +50,10 @@ cases_global = [
         },
         Compose(
             service={
-                "earth": Config(
+                "earth": Service(
                     path="/tf-compose/planet/earth", var={"hello": "world"}
                 ),
-                "venus": Config(
+                "venus": Service(
                     path="/tf-compose/planet/venus", var={"hello": "world"}
                 ),
             }
@@ -74,11 +74,11 @@ cases_arguments = [
         },
         Compose(
             service={
-                "earth": Config(
+                "earth": Service(
                     path="/tf-compose/planet/earth",
                     reconfigure=True,
                 ),
-                "venus": Config(
+                "venus": Service(
                     path="/tf-compose/planet/venus",
                     reconfigure=True,
                 ),
