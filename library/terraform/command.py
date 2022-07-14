@@ -26,7 +26,7 @@ def serialize_every_argument(opts: Dict) -> List[any]:
     ]
 
 
-def serialize_command(command: CommandKind) -> List[str]:
+def serialize_command(command: CommandKind) -> List[List[str]]:
     match command:
         case CommandKind.up:
             return ["apply", "-auto-approve"]
@@ -36,12 +36,21 @@ def serialize_command(command: CommandKind) -> List[str]:
             return [command.name]
 
 
+def build_plan_apply(command: CommandKind, terraform_opts: Dict, service_opts: Dict) -> List[List[str]]:
+    ...
+
+
 def build_command(
     command: CommandKind, terraform_opts: Dict, service_opts: Dict
-) -> List[str]:
+) -> List[List[str]]:
+    if command == CommandKind.up or command == CommandKind.down:
+        return build_plan_apply(command, terraform_opts, service_opts)
+
     return [
-        value.TERRAFORM_EXECUTABLE,
-        *serialize_every_argument(terraform_opts),
-        *serialize_command(command),
-        *serialize_every_argument(service_opts),
+        [
+            value.TERRAFORM_EXECUTABLE,
+            *serialize_every_argument(terraform_opts),
+            *serialize_command(command),
+            *serialize_every_argument(service_opts),
+        ]
     ]
