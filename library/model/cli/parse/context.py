@@ -5,7 +5,7 @@ from library.model.cli.scope import ArgumentScope
 
 
 @dataclass
-class ParseContext:
+class ParserContext:
     tokens: List[str]
     scope: ArgumentScope
     command: Any

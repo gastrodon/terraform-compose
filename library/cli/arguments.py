@@ -11,17 +11,17 @@ from library.model.cli import (
     ArgumentSeparator,
 )
 from library.model.cli import ArgumentKind
-from library.model.cli.parse import ParseContext, Parser
+from library.model.cli.parse import ParserContext,  ArgumentParser
 from library.model.command import CommandKind, COMMAND_LOOKUP
 from library.model.command.kind import COMMAND_KIND_LOOKUP
 
 def update(
-    context: ParseContext,
+    context: ParserContext,
     skip: int = 0,
     scope: ArgumentScope = None,
     command: CommandKind = None,
-) -> ParseContext:
-    return ParseContext(
+) -> ParserContext:
+    return ParserContext(
         context.tokens[skip:],
         scope or context.scope,
         command or context.command,
@@ -33,7 +33,7 @@ def require_kv(tokens: List[str]):
         raise ValueError(f"argument {tokens[0]} requires a value!")
 
 
-def next_command(context: ParseContext) -> (ArgumentCommand, List[str]):
+def next_command(context: ParserContext) -> (ArgumentCommand, List[str]):
     if context.command is not CommandKind.terraform:
         raise ValueError(
             f"don't know what to do with {context.tokens[0]},"
@@ -52,7 +52,7 @@ def next_command(context: ParseContext) -> (ArgumentCommand, List[str]):
         raise ValueError(f"no such command {context.tokens[0]}!")
 
 
-def next_named(context: ParseContext) -> (Argument, ParseContext):
+def next_named(context: ParserContext) -> (Argument, ParserContext):
     if context.scope is ArgumentScope.compose:
         require_kv(context.tokens)
         return (
@@ -81,7 +81,7 @@ def next_named(context: ParseContext) -> (Argument, ParseContext):
             raise Exception(f"{context.command.name} has unknown kind {parser.kind}!")
 
 
-def next_argument(context: ParseContext) -> (Argument, ParseContext):
+def next_argument(context: ParserContext) -> (Argument, ParserContext):
     if not context.tokens:
         raise ValueError("no tokens to read!")
 
@@ -95,7 +95,7 @@ def next_argument(context: ParseContext) -> (Argument, ParseContext):
 
 
 def arguments(tokens: List[str]) -> List[Argument]:
-    context = ParseContext([*tokens], ArgumentScope.terraform, CommandKind.terraform)
+    context = ParserContext([*tokens], ArgumentScope.terraform, CommandKind.terraform)
     collection = []
 
     while context.tokens:

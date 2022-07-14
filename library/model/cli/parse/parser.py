@@ -5,7 +5,7 @@ from library.model.cli.kind import ArgumentKind
 
 
 @dataclass
-class Parser:
+class ArgumentParser:
     kind: ArgumentKind
     default: Any = None
     rename: str = None

@@ -2,38 +2,38 @@ from typing import Dict
 
 from library.cli import parse
 from library.model.cli import ArgumentKind
-from library.model.cli.parse import Parser
+from library.model.cli.parse import ArgumentParser
 from library.model.command.base import Command
 
-ARGUMENTS_PLAN: Dict[str, Parser] = {
-    "compact-warnings": Parser(ArgumentKind.kv),
-    "input": Parser(ArgumentKind.kv),
-    "lock-timeout": Parser(ArgumentKind.kv),
-    "lock": Parser(ArgumentKind.kv),
-    "out": Parser(ArgumentKind.kv),
-    "parallelism": Parser(ArgumentKind.kv),
-    "refresh": Parser(ArgumentKind.kv, parser=parse.listy),
-    "replace": Parser(ArgumentKind.kv),
-    "state": Parser(ArgumentKind.kv),
-    "target": Parser(ArgumentKind.kv, parser=parse.listy),
-    "var-file": Parser(ArgumentKind.kv, parser=parse.listy),
-    "var": Parser(ArgumentKind.kv, parser=parse.dicty),
-    "detailed_exitcode": Parser(ArgumentKind.flag, False),
-    "refresh-only": Parser(ArgumentKind.flag, False),
-    "no-color": Parser(ArgumentKind.flag, False),
+ARGUMENTS_PLAN: Dict[str, ArgumentParser] = {
+    "compact-warnings": ArgumentParser(ArgumentKind.kv),
+    "input": ArgumentParser(ArgumentKind.kv),
+    "lock-timeout": ArgumentParser(ArgumentKind.kv),
+    "lock": ArgumentParser(ArgumentKind.kv),
+    "out": ArgumentParser(ArgumentKind.kv),
+    "parallelism": ArgumentParser(ArgumentKind.kv),
+    "refresh": ArgumentParser(ArgumentKind.kv, parser=parse.listy),
+    "replace": ArgumentParser(ArgumentKind.kv),
+    "state": ArgumentParser(ArgumentKind.kv),
+    "target": ArgumentParser(ArgumentKind.kv, parser=parse.listy),
+    "var-file": ArgumentParser(ArgumentKind.kv, parser=parse.listy),
+    "var": ArgumentParser(ArgumentKind.kv, parser=parse.dicty),
+    "detailed_exitcode": ArgumentParser(ArgumentKind.flag, False),
+    "refresh-only": ArgumentParser(ArgumentKind.flag, False),
+    "no-color": ArgumentParser(ArgumentKind.flag, False),
 }
 
-ARGUMENTS_APPLY: Dict[str, Parser] = {
-    "backup": Parser(ArgumentKind.kv),
-    "input": Parser(ArgumentKind.kv),
-    "lock-timeout": Parser(ArgumentKind.kv),
-    "lock": Parser(ArgumentKind.kv),
-    "parallelism": Parser(ArgumentKind.kv),
-    "state-out": Parser(ArgumentKind.kv),
-    "state": Parser(ArgumentKind.kv),
-    "auto-approve": Parser(ArgumentKind.flag, False),
-    "compact-warnings": Parser(ArgumentKind.flag, False),
-    "no-color": Parser(ArgumentKind.flag, False),
+ARGUMENTS_APPLY: Dict[str, ArgumentParser] = {
+    "backup": ArgumentParser(ArgumentKind.kv),
+    "input": ArgumentParser(ArgumentKind.kv),
+    "lock-timeout": ArgumentParser(ArgumentKind.kv),
+    "lock": ArgumentParser(ArgumentKind.kv),
+    "parallelism": ArgumentParser(ArgumentKind.kv),
+    "state-out": ArgumentParser(ArgumentKind.kv),
+    "state": ArgumentParser(ArgumentKind.kv),
+    "auto-approve": ArgumentParser(ArgumentKind.flag, False),
+    "compact-warnings": ArgumentParser(ArgumentKind.flag, False),
+    "no-color": ArgumentParser(ArgumentKind.flag, False),
 }
 
 
@@ -41,7 +41,7 @@ class Up(Command):
     name = "up"
 
     @staticmethod
-    def arguments() -> Dict[str, Parser]:
+    def arguments() -> Dict[str, ArgumentParser]:
         return {**ARGUMENTS_PLAN, **ARGUMENTS_APPLY}
 
 
