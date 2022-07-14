@@ -3,24 +3,24 @@ from typing import Dict, List
 import pytest
 
 from library import cli, load
-from library.model.compose import Compose, Service
+from library.model.compose import Compose
 from library.resolve import resolve
 
 cases_uncomplex = [
     [
         [],
         {"": {"service": {"hello": {"path": "./world"}}}},
-        Compose(service={"hello": Service(path="/tf-compose/world")}),
+        Compose(service={"hello": {"path": "/tf-compose/world"}}),
     ],
     [
         [],
         {"": {"service": {"hello": {"var-file": ["./foobar"]}}}},
-        Compose(service={"hello": Service(var_file=["/tf-compose/foobar"])}),
+        Compose(service={"hello": {"var-file": ["/tf-compose/foobar"]}}),
     ],
     [
         [],
         {"": {"service": {"hello": {"state-out": "./state"}}}},
-        Compose(service={"hello": Service(state_out="/tf-compose/state")}),
+        Compose(service={"hello": {"state-out": "/tf-compose/state"}}),
     ],
 ]
 
@@ -31,7 +31,7 @@ cases_import = [
             "": {"import": ["remote"]},
             "remote": {"service": {"hello": {"path": "./world"}}},
         },
-        Compose(service={"remote.hello": Service(path="/tf-compose/remote/world")}),
+        Compose(service={"remote.hello": {"path": "/tf-compose/remote/world"}}),
     ],
     [
         [],
@@ -41,7 +41,7 @@ cases_import = [
             "remote.tiny": {"service": {"hello": {"path": "./world"}}},
         },
         Compose(
-            service={"remote.tiny.hello": Service(path="/tf-compose/remote/tiny/world")}
+            service={"remote.tiny.hello": {"path": "/tf-compose/remote/tiny/world"}}
         ),
     ],
 ]
@@ -60,12 +60,14 @@ cases_global = [
         },
         Compose(
             service={
-                "earth": Service(
-                    path="/tf-compose/planet/earth", var={"hello": "world"}
-                ),
-                "venus": Service(
-                    path="/tf-compose/planet/venus", var={"hello": "world"}
-                ),
+                "earth": {
+                    "path": "/tf-compose/planet/earth",
+                    "var": {"hello": "world"},
+                },
+                "venus": {
+                    "path": "/tf-compose/planet/venus",
+                    "var": {"hello": "world"},
+                },
             }
         ),
     ]
@@ -84,14 +86,14 @@ cases_arguments = [
         },
         Compose(
             service={
-                "earth": Service(
-                    path="/tf-compose/planet/earth",
-                    reconfigure=True,
-                ),
-                "venus": Service(
-                    path="/tf-compose/planet/venus",
-                    reconfigure=True,
-                ),
+                "earth": {
+                    "path": "/tf-compose/planet/earth",
+                    "reconfigure": True,
+                },
+                "venus": {
+                    "path": "/tf-compose/planet/venus",
+                    "reconfigure": True,
+                },
             }
         ),
     ],
@@ -109,14 +111,14 @@ cases_arguments = [
         },
         Compose(
             service={
-                "earth": Service(
-                    path="/tf-compose/planet/earth",
-                    var_file=["/tf-compose/splat", "/tf-compose/woomy"],
-                ),
-                "venus": Service(
-                    path="/tf-compose/planet/venus",
-                    var_file=["/tf-compose/woomy"],
-                ),
+                "earth": {
+                    "path": "/tf-compose/planet/earth",
+                    "var-file": ["/tf-compose/splat", "/tf-compose/woomy"],
+                },
+                "venus": {
+                    "path": "/tf-compose/planet/venus",
+                    "var-file": ["/tf-compose/woomy"],
+                },
             }
         ),
     ],

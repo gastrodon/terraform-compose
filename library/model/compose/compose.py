@@ -3,15 +3,14 @@ from typing import Dict
 
 import dacite
 
-from library.model.compose.service import Service
-
 
 @dataclass
 class Compose:
-    service: Dict[str, Service] = field(default_factory=dict)
+    service: Dict[str, Dict] = field(default_factory=dict)
 
 
 def be_snake(service: Dict) -> Dict:
+    return service  # TODO
     return {key.replace("-", "_"): value for key, value in service.items()}
 
 
