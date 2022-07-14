@@ -12,7 +12,7 @@ from library.model.cli import (
 )
 from library.model.cli import ArgumentKind
 from library.model.cli.parse import ParseContext, Parser
-from library.model.command import CommandKind
+from library.model.command import CommandKind, COMMAND_LOOKUP
 from library.model.command.kind import COMMAND_KIND_LOOKUP
 
 def update(
@@ -61,7 +61,7 @@ def next_named(context: ParseContext) -> (Argument, ParseContext):
         )
 
     name = context.tokens[0].removeprefix("-")
-    parser = context.command.value.arguments().get(name)
+    parser = COMMAND_LOOKUP[context.command.value].arguments().get(name)
     if not parser:
         raise Exception(f"{context.command.name} can't parse {name}!")
 

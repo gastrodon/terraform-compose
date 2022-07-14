@@ -1,18 +1,15 @@
 from enum import Enum
 from typing import Dict
 
-from library.model.command import command
-from library.model.command.base import Command
-
 
 class CommandKind(Enum):
-    terraform: Command = command.Terraform
-    down: Command = command.Down
-    graph: Command = command.Graph
-    init: Command = command.Init
-    show: Command = command.Show
-    up: Command = command.Up
-    validate: Command = command.Validate
+    terraform: str = "terraform"
+    down: str = "down"
+    graph: str = "graph"
+    init: str = "init"
+    show: str = "show"
+    up: str = "up"
+    validate: str = "validate"
 
 
 COMMAND_KIND_LOOKUP: Dict[str, CommandKind] = {
