@@ -15,7 +15,7 @@ def main():
     )
 
     resolve.gather("", terraform_opts["context"], terraform_opts["file"])
-    execute.execute("", arguments)
+    execute.execute("", arguments, terraform_opts)
 
 
 if __name__ == "__main__":
