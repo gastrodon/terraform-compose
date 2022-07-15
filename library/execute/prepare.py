@@ -19,6 +19,7 @@ def serialize_argument(field: str, value: Any) -> List[str]:
 
     return [dashed, value]
 
+
 def serialize_every_argument(opts: Dict) -> List[any]:
     return [
         token

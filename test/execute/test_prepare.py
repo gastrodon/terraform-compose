@@ -2,7 +2,8 @@ from typing import Dict, List
 
 import pytest
 
-from library import terraform, value
+from library import value
+from library.execute import prepare
 from library.model.command import CommandKind
 
 cases = [
@@ -11,7 +12,14 @@ cases = [
         CommandKind.init,
         {},
         {},
-        [[value.TERRAFORM_EXECUTABLE, "-chdir", "/tf-compose", "init"]],
+        [
+            [
+                value.TERRAFORM_EXECUTABLE,
+                "-chdir",
+                "/tf-compose",
+                "init",
+            ],
+        ],
     ],
     [
         "/tf-compose",
@@ -81,4 +89,4 @@ def test_build_command(
     service_opts: Dict,
     want: List[str],
 ):
-    assert terraform.build_command(path, command, terraform_opts, service_opts) == want
+    assert prepare.build_command(path, command, terraform_opts, service_opts) == want
