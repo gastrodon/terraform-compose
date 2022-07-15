@@ -2,6 +2,7 @@ from typing import Any, Dict, List
 
 from library import value
 from library.model.command import CommandKind
+from library.model.command import COMMAND_LOOKUP
 
 
 def serialize_argument(field: str, value: Any) -> List[str]:
@@ -36,21 +37,72 @@ def serialize_command(command: CommandKind) -> List[List[str]]:
             return [command.name]
 
 
-def build_plan_apply(command: CommandKind, terraform_opts: Dict, service_opts: Dict) -> List[List[str]]:
-    ...
-
-
-def build_command(
-    command: CommandKind, terraform_opts: Dict, service_opts: Dict
+def build_plan_apply(
+    path: str,
+    command: CommandKind,
+    terraform_opts: Dict,
+    service_opts: Dict
 ) -> List[List[str]]:
-    if command == CommandKind.up or command == CommandKind.down:
-        return build_plan_apply(command, terraform_opts, service_opts)
+    allowed = COMMAND_LOOKUP[command.value].arguments()
+    plan_opts = {
+        key: value
+        for key, value in service_opts.items()
+        if key in allowed and "plan" in allowed[key].commands
+    }
+
+    apply_opts = {
+        key: value
+        for key, value in service_opts.items()
+        if key in allowed and "apply" in allowed[key].commands
+    }
 
     return [
         [
             value.TERRAFORM_EXECUTABLE,
+            "-chdir",
+            path,
+            *serialize_every_argument(terraform_opts),
+            *(["plan", "-destroy"] if command == CommandKind.down else ["plan"]),
+            "-out",
+            value.TERRAFORM_PLAN_FILE,
+            *serialize_every_argument(plan_opts),
+        ],
+        [
+            value.TERRAFORM_EXECUTABLE,
+            "-chdir",
+            path,
+            *serialize_every_argument(terraform_opts),
+            "apply",
+            value.TERRAFORM_PLAN_FILE,
+            "-auto-approve",
+            *serialize_every_argument(apply_opts),
+        ],
+    ]
+
+
+def build_command(
+    path: str,
+    command: CommandKind,
+    terraform_opts: Dict,
+    service_opts: Dict
+) -> List[List[str]]:
+    if command == CommandKind.up or command == CommandKind.down:
+        return build_plan_apply(path, command, terraform_opts, service_opts)
+
+    allowed = COMMAND_LOOKUP[command.value].arguments()
+    service_opts_filtered = {
+        key: value
+        for key, value in service_opts.items()
+        if key in allowed
+    }
+
+    return [
+        [
+            value.TERRAFORM_EXECUTABLE,
+            "-chdir",
+            path,
             *serialize_every_argument(terraform_opts),
             *serialize_command(command),
-            *serialize_every_argument(service_opts),
+            *serialize_every_argument(service_opts_filtered),
         ]
     ]
