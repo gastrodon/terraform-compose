@@ -7,5 +7,5 @@ from library.model.cli import Argument
 from library.model.compose import Compose
 
 
-def load(args: List[Argument], name: str = "") -> Compose:
+def load(name: str, args: List[Argument]) -> Compose:
     return Compose(service=parse.parse(args, resolve.get(name))["service"])

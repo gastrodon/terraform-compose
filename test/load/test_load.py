@@ -137,4 +137,4 @@ def test_load(argv: List[str], resolution: Dict[str, Dict], want: Compose, mocke
     mocker.patch("os.getcwd", return_value="/tf-compose")
     resolve.set(resolution)
 
-    assert load.load(cli.arguments(argv), "") == want
+    assert load.load("", cli.arguments(argv)) == want
