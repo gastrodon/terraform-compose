@@ -1,48 +1,59 @@
-from typing import Dict
+from typing import Callable, Dict, Set, Tuple
 
 from library.cli import parse
 from library.model.cli import ArgumentKind
 from library.model.cli.parse import ArgumentParser
 from library.model.command.base import Command
 
-ARGUMENTS_PLAN: Dict[str, ArgumentParser] = {
-    "compact-warnings": ArgumentParser(ArgumentKind.kv),
-    "input": ArgumentParser(ArgumentKind.kv),
-    "lock-timeout": ArgumentParser(ArgumentKind.kv),
-    "lock": ArgumentParser(ArgumentKind.kv),
-    "out": ArgumentParser(ArgumentKind.kv),
-    "parallelism": ArgumentParser(ArgumentKind.kv),
-    "refresh": ArgumentParser(ArgumentKind.kv, parser=parse.listy),
-    "replace": ArgumentParser(ArgumentKind.kv),
-    "state": ArgumentParser(ArgumentKind.kv),
-    "target": ArgumentParser(ArgumentKind.kv, parser=parse.listy),
-    "var-file": ArgumentParser(ArgumentKind.kv, parser=parse.listy),
-    "var": ArgumentParser(ArgumentKind.kv, parser=parse.dicty),
-    "detailed_exitcode": ArgumentParser(ArgumentKind.flag, False),
-    "refresh-only": ArgumentParser(ArgumentKind.flag, False),
-    "no-color": ArgumentParser(ArgumentKind.flag, False),
+kv: Dict[str, Tuple[str, Set[str]]] = {
+    "backup": ("kv", {"apply"}),
+    "input": ("kv", {"apply", "plan"}),
+    "lock-timeout": ("kv", {"apply", "plan"}),
+    "lock": ("kv", {"apply", "plan"}),
+    "parallelism": ("kv", {"apply", "plan"}),
+    "state-out": ("kv", {"apply"}),
+    "state": ("kv", {"apply", "plan"}),
 }
 
-ARGUMENTS_APPLY: Dict[str, ArgumentParser] = {
-    "backup": ArgumentParser(ArgumentKind.kv),
-    "input": ArgumentParser(ArgumentKind.kv),
-    "lock-timeout": ArgumentParser(ArgumentKind.kv),
-    "lock": ArgumentParser(ArgumentKind.kv),
-    "parallelism": ArgumentParser(ArgumentKind.kv),
-    "state-out": ArgumentParser(ArgumentKind.kv),
-    "state": ArgumentParser(ArgumentKind.kv),
-    "auto-approve": ArgumentParser(ArgumentKind.flag, False),
-    "compact-warnings": ArgumentParser(ArgumentKind.flag, False),
-    "no-color": ArgumentParser(ArgumentKind.flag, False),
+flag: Dict[str, Tuple[str, Set[str]]] = {
+    "detailed_exitcode": ("flag", {"apply", "plan"}),
+    "refresh-only": ("flag", {"plan"}),
+    "no-color": ("flag", {"apply", "plan"}),
+    "compact-warnings": ("flag", {"apply", "plan"}),
+    "no-color": ("flag", {"apply", "plan"}),
 }
+
+listy: Dict[str, Tuple[str, Set[str]]] = {
+    "refresh": ("listy", {"plan"}),
+    "target": ("listy", {"plan"}),
+    "var-file": ("listy", {"plan"}),
+}
+
+dicty: Dict[str, Tuple[str, Set[str]]] = {
+    "var": ("dicty", {"plan"}),
+}
+
+
+def make_parser(kind: str, commands: Set[str]) -> Callable[[], ArgumentParser]:
+    match kind:
+        case "kv":
+            return ArgumentParser(ArgumentKind.kv, commands=commands)
+        case "flag":
+            return ArgumentParser(ArgumentKind.flag, False, commands=commands)
+        case "listy":
+            return ArgumentParser(ArgumentKind.kv, list(), parser=parse.listy, commands=commands)
+        case "dicty":
+            return ArgumentParser(ArgumentKind.kv, dict(), parser=parse.dicty, commands=commands)
+        case _:
+            raise ValueError(f"I don't know what {kind} is!")
 
 
 class Up(Command):
     name = "up"
-
-    @staticmethod
-    def arguments() -> Dict[str, ArgumentParser]:
-        return {**ARGUMENTS_PLAN, **ARGUMENTS_APPLY}
+    extra = {
+        key: make_parser(*value)
+        for key, value in {**kv, **flag, **listy, **dicty}.items()
+    }
 
 
 class Down(Up):

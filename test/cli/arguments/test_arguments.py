@@ -50,8 +50,6 @@ cases = [
     [
         [
             "down",
-            "-out",
-            "./out",
             "-var-file",
             "./vars",
             "-var",
@@ -64,7 +62,6 @@ cases = [
         ],
         [
             ArgumentCommand("down"),
-            ArgumentKV("out", "./out", ArgumentScope.command),
             ArgumentKV("var-file", ["./vars"], ArgumentScope.command),
             ArgumentKV("var", {"hello": "world", "foo": "bar"}, ArgumentScope.command),
             ArgumentSeparator(),
