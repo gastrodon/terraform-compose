@@ -81,7 +81,7 @@ def build_plan_apply(
     ]
 
 
-def build_command(
+def build(
     path: str,
     command: CommandKind,
     terraform_opts: Dict,
