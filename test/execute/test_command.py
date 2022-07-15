@@ -81,14 +81,14 @@ cases = [
 ]
 
 
-@pytest.mark.parametrize("path,command_kind,terraform_opts,service_opts,want", cases)
+@pytest.mark.parametrize("path,command_kind,terraform_opts,command_opts,want", cases)
 def test_build_command(
     path: str,
     command_kind: CommandKind,
     terraform_opts: Dict,
-    service_opts: Dict,
+    command_opts: Dict,
     want: List[str],
 ):
     assert (
-        command.build_command(path, command_kind, terraform_opts, service_opts) == want
+        command.build_command(path, command_kind, terraform_opts, command_opts) == want
     )

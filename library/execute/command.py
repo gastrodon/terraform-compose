@@ -1,7 +1,7 @@
 from typing import Any, Dict, List
 
 from library import value
-from library.model.command import CommandKind
+from library.model.command import CommandKind, Up
 from library.model.command import COMMAND_LOOKUP
 
 
@@ -42,19 +42,19 @@ def build_plan_apply(
     path: str,
     command: CommandKind,
     terraform_opts: Dict,
-    service_opts: Dict
+    command_opts: Dict
 ) -> List[List[str]]:
-    allowed = COMMAND_LOOKUP[command.value].arguments()
+    parsers = Up.arguments()
     plan_opts = {
         key: value
-        for key, value in service_opts.items()
-        if key in allowed and "plan" in allowed[key].commands
+        for key, value in command_opts.items()
+        if "plan" in parsers[key].commands
     }
 
     apply_opts = {
         key: value
-        for key, value in service_opts.items()
-        if key in allowed and "apply" in allowed[key].commands
+        for key, value in command_opts.items()
+        if"apply" in parsers[key].commands
     }
 
     return [
@@ -85,17 +85,10 @@ def build_command(
     path: str,
     command: CommandKind,
     terraform_opts: Dict,
-    service_opts: Dict
+    command_opts: Dict
 ) -> List[List[str]]:
     if command == CommandKind.up or command == CommandKind.down:
-        return build_plan_apply(path, command, terraform_opts, service_opts)
-
-    allowed = COMMAND_LOOKUP[command.value].arguments()
-    service_opts_filtered = {
-        key: value
-        for key, value in service_opts.items()
-        if key in allowed
-    }
+        return build_plan_apply(path, command, terraform_opts, command_opts)
 
     return [
         [
@@ -104,6 +97,6 @@ def build_command(
             path,
             *serialize_every_argument(terraform_opts),
             *serialize_command(command),
-            *serialize_every_argument(service_opts_filtered),
+            *serialize_every_argument(command_opts),
         ]
     ]
