@@ -3,7 +3,7 @@ from typing import Dict, List
 import pytest
 
 from library import value
-from library.execute import prepare
+from library.execute import command
 from library.model.command import CommandKind
 
 cases = [
@@ -81,12 +81,14 @@ cases = [
 ]
 
 
-@pytest.mark.parametrize("path,command,terraform_opts,service_opts,want", cases)
+@pytest.mark.parametrize("path,command_kind,terraform_opts,service_opts,want", cases)
 def test_build_command(
     path: str,
-    command: CommandKind,
+    command_kind: CommandKind,
     terraform_opts: Dict,
     service_opts: Dict,
     want: List[str],
 ):
-    assert prepare.build_command(path, command, terraform_opts, service_opts) == want
+    assert (
+        command.build_command(path, command_kind, terraform_opts, service_opts) == want
+    )
