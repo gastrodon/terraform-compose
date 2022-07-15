@@ -4,8 +4,8 @@ import library.load.handle  # noqa
 from library import resolve
 from library.load.route import parse
 from library.model.cli import Argument
-from library.model.compose import Compose, compose
+from library.model.compose import Compose
 
 
 def load(args: List[Argument], name: str = "") -> Compose:
-    return compose.from_dict(parse.parse(args, resolve.get(name)))
+    return Compose(service=parse.parse(args, resolve.get(name))["service"])
